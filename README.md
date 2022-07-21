@@ -2,6 +2,8 @@
 
 <h2>Aplikacija za brz i bezbedan pronalazak posla/radnika za sve potrebe</h2>
 
+Kratak pregled funkcionalnosti
+
 Neregistrovani korisnik:
   - pregled poslova
   - pregled poslodavaca
@@ -37,6 +39,8 @@ Administrator sistema:
   - mogućnost pregleda/postavke odredjene lokacije posla na mapi pri čemu bi korisnik mogao da bira poslove do određene granice udaljenosti/dužine putovanja
   - mogućnost dopisivanja radnika i poslodavca
  
+Arhitektura sistema
+
 Servisi:
   - korisnički servis (Go/PostgrateSQL)
   - servis za komentare (Go/PostgrateSQL)
