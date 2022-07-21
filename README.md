@@ -23,13 +23,13 @@ Radnik:
   - detaljan pregled oglasa za posao
   - detaljan pregled profila poslodavaca
   - prijava na oglas 
-  - ocenjivanje i komentarisanje poslodavaca u koliko su imali saradnju u prošlosti
+  - ocenjivanje i komentarisanje poslodavaca ukoliko su imali saradnju u prošlosti
   
 Poslodavac:
   - crud ponuda za posao (definisanje plate, lokacije, tipa posla, vrste ugovora..)
   - pregled/prihvatanje/odbijanje prijava ranika na oglase koje je postavio
   - detaljan pregled profila radnika
-  - ocenjivanje i komentarisanje radnika u koliko su imali saradnju u prošlosti
+  - ocenjivanje i komentarisanje radnika ukoliko su imali saradnju u prošlosti
  
 Administrator sistema:
   - prihvatanje/odbijanje prijava zahteva za registraciju
