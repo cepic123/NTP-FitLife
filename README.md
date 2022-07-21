@@ -1,6 +1,6 @@
 <h1>Projekat iz predmeta Napredne tehnike programiranja</h1>
 
-<h2>Aplikacija za pronalazak/postavljanje oglasa za posao</h2>
+<h2>Aplikacija za brz i bezbedan pronalazak posla/radnika za sve potrebe</h2>
 
 Neregistrovani korisnik:
   - pregled poslova
@@ -33,7 +33,8 @@ Administrator sistema:
   - prihvatanje/odbijanje prijava zahteva za registraciju
   - pregled žalbi i blokiranih korisnika uz dalju mogućnost brisanje profila radnika i poslodavaca
 
-*predlozi za proširenje - mogućnost pregleda/postavke odredjene lokacije posla na mapi pri čemu bi korisnik mogao da bira poslove do određene granice udaljenosti/dužine putovanja
+*predlozi za proširenje: 
+  - mogućnost pregleda/postavke odredjene lokacije posla na mapi pri čemu bi korisnik mogao da bira poslove do određene granice udaljenosti/dužine putovanja
   - mogućnost dopisivanja radnika i poslodavca
  
 Servisi:
