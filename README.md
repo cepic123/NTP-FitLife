@@ -1,8 +1,8 @@
 <h1>Projekat iz predmeta Napredne tehnike programiranja</h1>
 
-<h2>Aplikacija za pronalazak/postavljanje oglasa za posao.</h2>
+<h2>Aplikacija za pronalazak/postavljanje oglasa za posao</h2>
 
-<h3>Neregistrovani korisnik:</h3>
+Neregistrovani korisnik:
   - pregled poslova
   - pregled poslodavaca
   - registracija kao radnik
