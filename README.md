@@ -1,8 +1,8 @@
 <h1>Projekat iz predmeta Napredne tehnike programiranja</h1>
 
-<h2>Aplikacija za brz i bezbedan pronalazak posla/radnika za sve potrebe</h2>
+<h2>WorkFinder - Aplikacija za brz i bezbedan pronalazak posla/radnika za sve potrebe</h2>
 
-Kratak pregled funkcionalnosti
+<h3>Kratak pregled funkcionalnosti</h3>
 
 Neregistrovani korisnik:
   - pregled poslova
@@ -39,7 +39,7 @@ Administrator sistema:
   - mogućnost pregleda/postavke odredjene lokacije posla na mapi pri čemu bi korisnik mogao da bira poslove do određene granice udaljenosti/dužine putovanja
   - mogućnost dopisivanja radnika i poslodavca
  
-Arhitektura sistema
+<h3>Arhitektura sistema</h3>
 
 Servisi:
   - korisnički servis (Go/PostgrateSQL)
