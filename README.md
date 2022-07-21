@@ -24,6 +24,7 @@ Radnik:
   - detaljan pregled profila poslodavaca
   - prijava na oglas 
   - ocenjivanje i komentarisanje poslodavaca ukoliko su imali saradnju u prošlosti
+  - pregled prihvacenih/odbijenih ponuda kao i ponuda bez odgovora
   
 Poslodavac:
   - crud ponuda za posao (definisanje plate, lokacije, tipa posla, vrste ugovora..)
