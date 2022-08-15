@@ -1,6 +1,6 @@
 <h1>Projekat iz predmeta Napredne tehnike programiranja</h1>
 
-<h2>FitLife - Aplikacija za brz i bezbedan pronalazak posla/radnika za sve potrebe</h2>
+<h2>FitLife - Aplikacija za praćenje svog fitness napretka uz pregled planova ishrane i treninga postavljenih od strane trenera.</h2>
 
 <h3>Kratak pregled funkcionalnosti</h3>
 
@@ -9,7 +9,6 @@ Neregistrovani korisnik:
   - pregled planova ishrane
   - registracija kao korisnik
   - podnošenje zahteva za registraciju kao trener
-  - podnošenje žalbi i blokiranje drugih korisnika/trenera
 
 Korisnik:
   - prijava na sistem
@@ -20,6 +19,7 @@ Korisnik:
   - pretraga, pregled, ocenjivanje i komentarijasnje trenera
   * pod pregledom i pretragom podrazumeva se prikaz u vidu liste kao i detaljan prikaz
   - praćenje istorije ishrane i treninga na osnovu kalendara sa mogućnostima unošenja treninga/ishrane na dnevnom nivou
+  - podnošenje žalbi i blokiranje drugih korisnika/trenera
   - mogućnost pretplate na premium korisnika
   
 Trener:
