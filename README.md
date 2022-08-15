@@ -19,6 +19,7 @@ Korisnik:
   - pretraga, pregled, ocenjivanje i komentarijasnje trenera
   * pod pregledom i pretragom podrazumeva se prikaz u vidu liste kao i detaljan prikaz
   - praćenje istorije ishrane i treninga na osnovu kalendara sa mogućnostima unošenja treninga/ishrane na dnevnom nivou
+  - različite vrste izveštaja
   - podnošenje žalbi i blokiranje drugih korisnika/trenera
   - mogućnost pretplate na premium korisnika
   
@@ -30,7 +31,7 @@ Trener:
   - mogućnost deljenja treninga i planova ishrane na besplatne i samo dostupne premium korisnicima
   
 Administrator sistema:
-  - prihvatanje/odbijanje prijava zahteva za registraciju trenera
+  - prihvatanje/odbijanje zahteva za registraciju trenera
   - pregled žalbi i blokiranih korisnika uz dalju mogućnost brisanje profila korisnika i trenera
 
 *predlozi za dodatno proširenje: 
