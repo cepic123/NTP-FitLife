@@ -1,52 +1,52 @@
 <h1>Projekat iz predmeta Napredne tehnike programiranja</h1>
 
-<h2>WorkFinder - Aplikacija za brz i bezbedan pronalazak posla/radnika za sve potrebe</h2>
+<h2>FitLife - Aplikacija za brz i bezbedan pronalazak posla/radnika za sve potrebe</h2>
 
 <h3>Kratak pregled funkcionalnosti</h3>
 
 Neregistrovani korisnik:
-  - pregled poslova
-  - pregled poslodavaca
-  - registracija kao radnik
-  - podnošenje zahteva za registraciju kao poslodavac
+  - pregled treninga
+  - pregled planova ishrane
+  - registracija kao korisnik
+  - podnošenje zahteva za registraciju kao trener
+  - podnošenje žalbi i blokiranje drugih korisnika/trenera
 
-Radnik i poslodavac:
+Korisnik:
   - prijava na sistem
   - odjava sa sistema
-  - izmena profila
-  - podnošenje žalbe na druge korisnike i mogućnost blokiranja
-  - pregled istorije i izveštaja na osnovu prethodnih poslova koje je izdavao/radio
+  - pregled i izmena profila
+  - pretraga, pregled, ocenjivanje i komentarijasnje treninga
+  - pretraga, pregled, ocenjivanje i komentarijasnje planova ishrane
+  - pretraga, pregled, ocenjivanje i komentarijasnje trenera
+  * pod pregledom i pretragom podrazumeva se prikaz u vidu liste kao i detaljan prikaz
+  - praćenje istorije ishrane i treninga na osnovu kalendara sa mogućnostima unošenja treninga/ishrane na dnevnom nivou
+  - mogućnost pretplate na premium korisnika
   
-Radnik:
-  - pregled, filtriranje i sortiranje poslova po određenim parametrima:ocena poslodavca, plata od/do, tip posla(fizički posao, programiranje, uslužna delatnost...), vrsta ugovora(jednokratni, part-time, full-time..), kompanija
-  - pregled, filtriranje i sortiranje poslodavaca po određenim parametrima: prosečna plata, broj zaposlenih, prosečna ocena..
-  - detaljan pregled oglasa za posao
-  - detaljan pregled profila poslodavaca
-  - prijava na oglas 
-  - ocenjivanje i komentarisanje poslodavaca ukoliko su imali saradnju u prošlosti
-  - pregled prihvacenih/odbijenih ponuda kao i ponuda bez odgovora
+Trener:
+  - sve funkcionalnosti korisnika
+  - kreiranje pojedinačnih vežbi uz mogućnost uploada slike/videa
+  - kreiranje treninga kombinovanjem vežbi
+  - kreiranje planova ishrane
+  - mogućnost deljenja treninga i planova ishrane na besplatne i samo dostupne premium korisnicima
   
-Poslodavac:
-  - crud ponuda za posao (definisanje plate, lokacije, tipa posla, vrste ugovora..)
-  - pregled/prihvatanje/odbijanje prijava ranika na oglase koje je postavio
-  - detaljan pregled profila radnika
-  - ocenjivanje i komentarisanje radnika ukoliko su imali saradnju u prošlosti
- 
 Administrator sistema:
-  - prihvatanje/odbijanje prijava zahteva za registraciju
-  - pregled žalbi i blokiranih korisnika uz dalju mogućnost brisanje profila radnika i poslodavaca
+  - prihvatanje/odbijanje prijava zahteva za registraciju trenera
+  - pregled žalbi i blokiranih korisnika uz dalju mogućnost brisanje profila korisnika i trenera
 
-*predlozi za proširenje: 
-  - mogućnost pregleda/postavke odredjene lokacije posla na mapi pri čemu bi korisnik mogao da bira poslove do određene granice udaljenosti/dužine putovanja
-  - mogućnost dopisivanja radnika i poslodavca
+*predlozi za dodatno proširenje: 
+  - mogućnost dopisivanja trenera i premium korisnika
  
 <h3>Arhitektura sistema</h3>
 
 Servisi:
+  - Gateway servis (Go/PostgrateSQL)
   - korisnički servis (Go/PostgrateSQL)
   - servis za komentare (Go/PostgrateSQL)
   - servis za ocenjivanje (Go/PostgrateSQL)
-  - servis za oglase (Go/PostgrateSQL)
-
+  - servis za treninge (Go/PostgrateSQL)
+  - servis za planove ishrane (Go/PostgrateSQL)
+  - servis za žalbe (Go/PostgrateSQL)
+  - servis za blokiranje (Rust/PostgrateSQL)
+  
 Klijentska veb aplikacija:
   - Monolitna angular aplikacija
