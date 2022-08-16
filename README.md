@@ -36,6 +36,15 @@ Administrator sistema:
 
 *predlozi za dodatno proširenje: 
   - mogućnost dopisivanja trenera i premium korisnika
+  
+<h3>Izmene na osnovu issue-a:</h3>
+
+Proširenje funkcionalnosti treninga i ishrane:
+  - Kako bi aplikacija bila što fleksibilnija biće omogućeno trenerima da grupišu više treninga za odredjeni vremenski period (nekoliko nedelja, mesec dana na primer) i da tako naprave "plan treninga", ista logika će se primenjivati za planove ishrane. Takodje kada korisnik bira plan ishrane/treninga kalendar će mu se automatski popuniti treninzima/obrocima za odredjeni vremenski period. Prikaz kalorija biće prikazan na dnevnom nivou i nivou obroka, kao i u vidu izveštaja od datuma do datuma.
+  
+*Dodatna proširenja za diplomski rad: 
+  - mogućnost slanja zahteva za kreiranje plana treninga, pri čemu bi premium korisnik naveo šta želi da postigne
+  - mogućnost slanja zahteva za kreiranje plana ishrane, pri čemu bi premium korisnik naveo šta želi da postigne
  
 <h3>Arhitektura sistema</h3>
 
@@ -46,7 +55,7 @@ Servisi:
   - servis za ocenjivanje (Go/PostgrateSQL)
   - servis za treninge (Go/PostgrateSQL)
   - servis za planove ishrane (Go/PostgrateSQL)
-  - servis za žalbe (Go/PostgrateSQL)
+  - servis za žalbe (Rust/PostgrateSQL)
   - servis za blokiranje (Rust/PostgrateSQL)
   
 Klijentska veb aplikacija:
