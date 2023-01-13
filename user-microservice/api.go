@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -24,8 +25,7 @@ func (s *APIServer) Run() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/user", makeHTTPHandleFunc(s.handleUser))
-
-	router.HandleFunc("/user/{id}", makeHTTPHandleFunc(s.handleGetUser))
+	router.HandleFunc("/user/{id}", makeHTTPHandleFunc(s.handleUser))
 
 	fmt.Println("Server running on PORT: ", s.listenAddr)
 	http.ListenAndServe(s.listenAddr, router)
@@ -60,7 +60,11 @@ func (s *APIServer) handleCreateUser(w http.ResponseWriter, r *http.Request) err
 }
 
 func (s *APIServer) handleDeleteUser(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	err := s.storage.DeleteUser(id)
+
+	return err
 }
 
 func (s *APIServer) handleGetAllUsers(w http.ResponseWriter, r *http.Request) error {

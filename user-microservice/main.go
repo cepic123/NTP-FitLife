@@ -6,12 +6,12 @@ import (
 )
 
 func main() {
-	fmt.Println("YOLO")
+	fmt.Println("NOLO")
 	storage, err := NewStorage()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	server := NewAPIServer(":3000", storage)
+	server := NewAPIServer(":3001", storage)
 	server.Run()
 }

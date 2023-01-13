@@ -28,7 +28,11 @@ func (s *Storage) CreateUser(user *User) error {
 	return nil
 }
 
-func (s *Storage) DeleteUser(int) error {
+func (s *Storage) DeleteUser(id int) error {
+	result := s.db.Delete(&User{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
 	return nil
 }
 
