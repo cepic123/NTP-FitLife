@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="p-formgroup-inline">
+        <div class="p-field">
+          <input
+            type="text"
+            required
+            pInputText
+            [(ngModel)]="username"
+          />
+        </div>
+        <div class="p-field">
+            <input
+            required
+            type="password"
+            pInputText
+            [(ngModel)]="password"
+          />
+        </div>
+        <button
+          pButton
+          type="button"
+          label="Submit"
+          (click)="login()"
+          id="submit-search"
+        ></button>
+      </div>
+</div>
