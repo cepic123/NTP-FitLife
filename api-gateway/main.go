@@ -2,23 +2,66 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/mux"
 )
+
+type ApiError struct {
+	Error string
+}
 
 func main() {
 	fmt.Println("API GATEWAY")
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/user", redirect("http://localhost:3001"))
-	router.HandleFunc("/user/{id}", redirect("http://localhost:3001"))
+	// router.Use(authMiddleware)
+	router.HandleFunc("/login", redirect("http://localhost:3001"))
+	router.HandleFunc("/user", authMiddleware(redirect("http://localhost:3001")))
+	router.HandleFunc("/user/{id}", authMiddleware(redirect("http://localhost:3001")))
 
 	http.ListenAndServe(":3000", router)
+}
+
+func authMiddleware(h http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Calling auth middleware")
+
+		tokenStr := r.Header.Get("x-jwt-token")
+		fmt.Println(tokenStr)
+		_, err := validateJWT(tokenStr)
+
+		fmt.Println("here")
+		if err != nil {
+			WriteJSON(w, http.StatusForbidden, ApiError{Error: "invalid token"})
+			return
+		}
+		h.ServeHTTP(w, r)
+	})
+}
+
+func validateJWT(tokenStr string) (*jwt.Token, error) {
+	//TODO: PUT IN ENV
+	secret := "cepic"
+	return jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte(secret), nil
+	})
+}
+
+func WriteJSON(w http.ResponseWriter, status int, v any) error {
+	w.WriteHeader(status)
+	w.Header().Add("Content-Type", "application/json")
+	return json.NewEncoder(w).Encode(v)
 }
 
 func redirect(redirectAddr string) http.HandlerFunc {

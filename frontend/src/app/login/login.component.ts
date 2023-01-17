@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CreateUserService } from './services/create-user.service';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -12,15 +12,15 @@ export class LoginComponent implements OnInit {
   password: string = ''
 
   constructor(
-    private createUserService: CreateUserService,
+    private LoginService: LoginService,
   ) { }
 
   ngOnInit(): void {
   }
   
   login() {
-    this.createUserService.login(this.username, this.password).subscribe((data) => {
-      alert(data);
+    this.LoginService.login(this.username, this.password).subscribe((data) => {
+      localStorage.setItem('x-jwt-token', data)
     })
   }
 }

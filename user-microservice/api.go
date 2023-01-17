@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 type APIServer struct {
@@ -24,11 +26,22 @@ func NewAPIServer(listenAddr string, storage StorageInterface) *APIServer {
 func (s *APIServer) Run() {
 	router := mux.NewRouter()
 
+	router.HandleFunc("/login", makeHTTPHandleFunc(s.handleLoginUser))
 	router.HandleFunc("/user", makeHTTPHandleFunc(s.handleUser))
 	router.HandleFunc("/user/{id}", makeHTTPHandleFunc(s.handleUser))
 
 	fmt.Println("Server running on PORT: ", s.listenAddr)
-	http.ListenAndServe(s.listenAddr, router)
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"localhost:3000"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "OPTIONS", "POST", "DELETE", "PUT"},
+		AllowedHeaders:   []string{"*"},
+	})
+
+	handler := c.Handler(router)
+	fmt.Println("HEREY")
+	http.ListenAndServe(s.listenAddr, handler)
 }
 
 func (s *APIServer) handleUser(w http.ResponseWriter, r *http.Request) error {
@@ -43,6 +56,22 @@ func (s *APIServer) handleUser(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	return nil
+}
+
+func (s *APIServer) handleLoginUser(w http.ResponseWriter, r *http.Request) error {
+	createUserDTO := new(CreateUserDTO)
+	if err := json.NewDecoder(r.Body).Decode(createUserDTO); err != nil {
+		return err
+	}
+
+	user := NewUser(createUserDTO.Username, createUserDTO.Password)
+
+	tokenString, err := createJWT(user)
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, tokenString)
 }
 
 func (s *APIServer) handleCreateUser(w http.ResponseWriter, r *http.Request) error {
@@ -83,6 +112,19 @@ func (s *APIServer) handleGetUser(w http.ResponseWriter, r *http.Request) error 
 	// account := NewUser("ACA", "PASSWORD")
 
 	return WriteJSON(w, http.StatusOK, vars)
+}
+
+func createJWT(user *User) (string, error) {
+	claims := &jwt.MapClaims{
+		"expiresAt": 15000,
+		"username":  user.Username,
+	}
+
+	secret := "cepic"
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	fmt.Println("HERE")
+
+	return token.SignedString([]byte(secret))
 }
 
 func WriteJSON(w http.ResponseWriter, status int, v any) error {
