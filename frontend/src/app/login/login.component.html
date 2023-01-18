@@ -1,27 +1,28 @@
 <div class="card">
-    <div class="p-formgroup-inline">
-        <div class="p-field">
-          <input
-            type="text"
-            required
-            pInputText
-            [(ngModel)]="username"
-          />
-        </div>
-        <div class="p-field">
-            <input
-            required
-            type="password"
-            pInputText
-            [(ngModel)]="password"
-          />
-        </div>
-        <button
-          pButton
-          type="button"
-          label="Submit"
-          (click)="login()"
-          id="submit-search"
-        ></button>
+  <div class="p-formgroup-inline">
+      <div class="p-field">
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="username"
+        />
       </div>
+      <br>
+      <div class="p-field">
+          <input
+          type="password"
+          pInputText
+          [(ngModel)]="password"
+        />
+      </div>
+      <br>
+      <button
+        pButton
+        [disabled]="validate()"
+        type="button"
+        label="Submit"
+        (click)="login()"
+        id="submit-search"
+      ></button>
+    </div>
 </div>

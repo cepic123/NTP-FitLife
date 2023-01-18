@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println("NOLO")
+	fmt.Println("USER MICROSERVICE")
 	storage, err := NewStorage()
 	if err != nil {
 		log.Fatal(err)

@@ -23,5 +23,9 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('x-jwt-token', data)
     })
   }
+
+  validate() {
+    return !(this.username.length > 0 && this.password.length > 0) 
+  }
 }
 
