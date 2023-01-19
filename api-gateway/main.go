@@ -22,9 +22,14 @@ func main() {
 	router := mux.NewRouter()
 
 	// router.Use(authMiddleware)
+
+	//USER MICROSERVICE
 	router.HandleFunc("/login", redirect("http://localhost:3001"))
-	router.HandleFunc("/user", authMiddleware(redirect("http://localhost:3001")))
-	router.HandleFunc("/user/{id}", authMiddleware(redirect("http://localhost:3001")))
+	router.HandleFunc("/user", redirect("http://localhost:3001"))
+	router.HandleFunc("/user/{id}", redirect("http://localhost:3001"))
+
+	//WORKOUT MICROSERVICE
+	router.HandleFunc("/exercise", redirect("http://localhost:3002"))
 
 	http.ListenAndServe(":3000", router)
 }

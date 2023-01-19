@@ -1,0 +1,22 @@
+<h1>Workouts</h1>
+<h1>ADD NUMBER TO REPS SETS TO INDICATE WHEN WE DO EM</h1>
+<div class="card" style="margin: 10px;">
+    <div class="p-formgroup-inline">
+      <div class="p-field">
+        <input type="text" pInputText [(ngModel)]="workout.name" />
+      </div>
+      <br>
+      <div class="p-field">
+        <input type="text" pInputText [(ngModel)]="workout.description" />
+      </div>
+      <br>
+      <button pButton type="button" label="Add Set" (click)="addSet()"></button>
+    </div>
+    <h1>Sets</h1>
+    <div *ngFor="let set of workout.sets; index as i;" class="card">
+        <p>Set {{i}}</p>
+        <button pButton type="button" label="Add Set" (click)="addSet()"></button>
+    </div>
+</div>
+
+<button pButton type="button" label="SHOW JSON" (click)="createWorkoutJSON()"></button>

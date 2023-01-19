@@ -11,6 +11,7 @@ import (
 
 type StorageInterface interface {
 	CreateExercise(*Exercise) error
+	GetAllExercises() (*[]Exercise, error)
 }
 
 func (s *Storage) CreateExercise(exercise *Exercise) error {
@@ -19,6 +20,16 @@ func (s *Storage) CreateExercise(exercise *Exercise) error {
 		return result.Error
 	}
 	return nil
+}
+
+func (s *Storage) GetAllExercises() (*[]Exercise, error) {
+	var exercises []Exercise
+
+	result := s.db.Find(&exercises)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &exercises, nil
 }
 
 type Storage struct {

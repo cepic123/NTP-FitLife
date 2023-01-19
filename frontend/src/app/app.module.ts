@@ -12,13 +12,18 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './interceptor/interceptor.service';
 import { InputTextModule}  from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { WorkoutComponent } from './workout/workout.component';
+import { TableModule } from 'primeng/table';
+import { ExerciseComponent } from './exercise/exercise.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
     NavbarComponent,
-    LoginComponent
+    LoginComponent,
+    WorkoutComponent,
+    ExerciseComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +32,8 @@ import { ButtonModule } from 'primeng/button';
     FormsModule,
     HttpClientModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    TableModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -1,0 +1,42 @@
+<h1>Exercises</h1>
+<div style="display: inline-flex; margin: 10px;">
+  <div class="card" style="margin: 10px;">
+    <div class="p-formgroup-inline">
+      <div class="p-field">
+        <input type="text" pInputText [(ngModel)]="exercise.name" />
+      </div>
+      <br>
+      <div class="p-field">
+        <input type="text" pInputText [(ngModel)]="exercise.description" />
+      </div>
+      <br>
+      <div class="p-field">
+        <input type="text" pInputText [(ngModel)]="exercise.img" />
+      </div>
+      <br>
+      <button pButton [disabled]="validateExercise()" type="button" label="Submit" (click)="createExercise()"
+        id="submit-search"></button>
+    </div>
+  </div>
+
+  <div class="card" style="margin: 10px;">
+    <p-table [value]="exercises">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Img</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-exercise>
+        <tr>
+          <td>{{exercise.name}}</td>
+          <td>{{exercise.description}}</td>
+          <td>{{exercise.img}}</td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

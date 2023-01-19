@@ -19,6 +19,16 @@ export class NavbarComponent implements OnInit {
       icon: 'pi pi-fw pi-sign-in',
       routerLink: '/user',
     },
+    {
+      label: 'Workout',
+      icon: 'pi pi-fw pi-sign-in',
+      routerLink: '/workout',
+    },
+    {
+      label: 'Exercise',
+      icon: 'pi pi-fw pi-sign-in',
+      routerLink: '/exercise',
+    },
   ];
 
   constructor() { }

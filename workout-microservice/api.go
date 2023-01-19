@@ -63,7 +63,13 @@ func (s *APIServer) handleDeleteExercise(w http.ResponseWriter, r *http.Request)
 }
 
 func (s *APIServer) handleGetAllExercises(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	result, err := s.storage.GetAllExercises()
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, result)
 }
 
 func WriteJSON(w http.ResponseWriter, status int, v any) error {
