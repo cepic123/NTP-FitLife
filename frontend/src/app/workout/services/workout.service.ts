@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateExerciseDTO, Exercise } from '../../models/exercise';
+import { Workout } from '../../models/workout';
 
 @Injectable({
   providedIn: 'root'
@@ -9,4 +9,8 @@ import { CreateExerciseDTO, Exercise } from '../../models/exercise';
 export class WorkoutService {
 
   constructor(private http: HttpClient) { }
+
+  createWorkout(workout?: Workout): Observable<Object>{
+    return this.http.post<Object>('/api/workout', workout);
+  }
 }

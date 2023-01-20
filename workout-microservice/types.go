@@ -14,14 +14,19 @@ type Exercise struct {
 
 type Rep struct {
 	gorm.Model
-	ID       int      `json:"id" gorm:"primaryKey"`
-	NoReps   int      `json:"noReps"`
-	Exercise Exercise `json:"exercise"`
+	ID         int `json:"id" gorm:"primaryKey"`
+	SetID      int
+	OrderNum   int `json:"orderNum"`
+	NoReps     int `json:"noReps"`
+	ExerciseID int
+	Exercise   Exercise `json:"exercise"`
 }
 
 type Set struct {
 	gorm.Model
-	ID         int   `json:"id" gorm:"primaryKey"`
+	ID         int `json:"id" gorm:"primaryKey"`
+	WorkoutID  int
+	OrderNum   int   `json:"orderNum"`
 	NoSets     int   `json:"noSets"`
 	BreakLngth int   `json:"breakLngth"`
 	Reps       []Rep `json:"reps"`

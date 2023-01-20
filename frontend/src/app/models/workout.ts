@@ -1,3 +1,5 @@
+import { Exercise } from "./exercise"
+
 export interface Workout {
     name?: string,
     description?: string
@@ -5,14 +7,16 @@ export interface Workout {
 }
 
 export interface Set {
+    orderNum: number,
     noSets?: number,
     breakLngth?: number,
-    reps?: Rep[]
+    reps: Rep[]
 }
 
 export interface Rep {
+    orderNum: number,
     noReps: number,
-    exercise: number
+    exercise?: Exercise
 }
 
 // type Exercise struct {

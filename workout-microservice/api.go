@@ -25,9 +25,25 @@ func (s *APIServer) Run() {
 
 	router.HandleFunc("/exercise", makeHTTPHandleFunc(s.handleExercise))
 
+	router.HandleFunc("/workout", makeHTTPHandleFunc(s.handleWorkout))
+
 	fmt.Println("Server running on PORT: ", s.listenAddr)
 
 	http.ListenAndServe(s.listenAddr, router)
+}
+
+func (s *APIServer) handleWorkout(w http.ResponseWriter, r *http.Request) error {
+	if r.Method == "GET" {
+		return s.handleGetAllWorkouts(w, r)
+	}
+	if r.Method == "POST" {
+		return s.handleCreateWorkout(w, r)
+	}
+	if r.Method == "DELETE" {
+		return s.handleDeleteWorkout(w, r)
+	}
+
+	return nil
 }
 
 func (s *APIServer) handleExercise(w http.ResponseWriter, r *http.Request) error {
@@ -41,6 +57,27 @@ func (s *APIServer) handleExercise(w http.ResponseWriter, r *http.Request) error
 		return s.handleDeleteExercise(w, r)
 	}
 
+	return nil
+}
+
+func (s *APIServer) handleGetAllWorkouts(w http.ResponseWriter, r *http.Request) error {
+	return nil
+}
+
+func (s *APIServer) handleCreateWorkout(w http.ResponseWriter, r *http.Request) error {
+	workout := new(Workout)
+	if err := json.NewDecoder(r.Body).Decode(workout); err != nil {
+		return err
+	}
+
+	if err := s.storage.CreateWorkout(workout); err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, workout)
+}
+
+func (s *APIServer) handleDeleteWorkout(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 

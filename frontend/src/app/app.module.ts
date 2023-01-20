@@ -15,6 +15,8 @@ import { ButtonModule } from 'primeng/button';
 import { WorkoutComponent } from './workout/workout.component';
 import { TableModule } from 'primeng/table';
 import { ExerciseComponent } from './exercise/exercise.component';
+import { DialogModule } from 'primeng/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { ExerciseComponent } from './exercise/exercise.component';
     HttpClientModule,
     InputTextModule,
     ButtonModule,
-    TableModule
+    TableModule,
+    DialogModule,
+    BrowserAnimationsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

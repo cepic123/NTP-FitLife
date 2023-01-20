@@ -31,6 +31,8 @@ func main() {
 	//WORKOUT MICROSERVICE
 	router.HandleFunc("/exercise", redirect("http://localhost:3002"))
 
+	router.HandleFunc("/workout", redirect("http://localhost:3002"))
+
 	http.ListenAndServe(":3000", router)
 }
 

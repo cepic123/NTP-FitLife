@@ -12,11 +12,21 @@ import (
 type StorageInterface interface {
 	CreateExercise(*Exercise) error
 	GetAllExercises() (*[]Exercise, error)
+
+	CreateWorkout(*Workout) error
 }
 
 func (s *Storage) CreateExercise(exercise *Exercise) error {
 	fmt.Println("IN STORAGE")
 	if result := s.db.Create(exercise); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *Storage) CreateWorkout(workout *Workout) error {
+	fmt.Println("IN STORAGE")
+	if result := s.db.Create(workout); result.Error != nil {
 		return result.Error
 	}
 	return nil
@@ -55,7 +65,7 @@ func NewStorage() (*Storage, error) {
 		return nil, err
 	}
 	//TODO: PUT THIS SOMHERE ELSE
-	db.AutoMigrate(&Exercise{})
+	db.AutoMigrate(&Workout{}, &Exercise{}, &Set{}, &Rep{})
 
 	return &Storage{
 		db: db,
