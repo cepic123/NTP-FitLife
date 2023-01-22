@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -26,6 +27,9 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/exercise", makeHTTPHandleFunc(s.handleExercise))
 
 	router.HandleFunc("/workout", makeHTTPHandleFunc(s.handleWorkout))
+	router.HandleFunc("/workout/{id}", makeHTTPHandleFunc(s.handleWorkout))
+
+	router.HandleFunc("/userWorkouts", makeHTTPHandleFunc(s.handleGetUserWorkouts))
 
 	fmt.Println("Server running on PORT: ", s.listenAddr)
 
@@ -34,7 +38,7 @@ func (s *APIServer) Run() {
 
 func (s *APIServer) handleWorkout(w http.ResponseWriter, r *http.Request) error {
 	if r.Method == "GET" {
-		return s.handleGetAllWorkouts(w, r)
+		return s.handleGetWorkout(w, r)
 	}
 	if r.Method == "POST" {
 		return s.handleCreateWorkout(w, r)
@@ -60,8 +64,31 @@ func (s *APIServer) handleExercise(w http.ResponseWriter, r *http.Request) error
 	return nil
 }
 
-func (s *APIServer) handleGetAllWorkouts(w http.ResponseWriter, r *http.Request) error {
-	return nil
+func (s *APIServer) handleGetWorkout(w http.ResponseWriter, r *http.Request) error {
+	workoutId, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	workout, err := s.storage.GetWorkout(workoutId)
+
+	if err != nil {
+		return nil
+	}
+
+	return WriteJSON(w, http.StatusOK, workout)
+}
+
+func (s *APIServer) handleGetUserWorkouts(w http.ResponseWriter, r *http.Request) error {
+	workoutIdsDTO := new(WorkoutIdsDTO)
+	if err := json.NewDecoder(r.Body).Decode(workoutIdsDTO); err != nil {
+		return err
+	}
+
+	workouts, err := s.storage.GetUserWorkouts(workoutIdsDTO.WorkoutIds)
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, workouts)
 }
 
 func (s *APIServer) handleCreateWorkout(w http.ResponseWriter, r *http.Request) error {

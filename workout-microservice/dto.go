@@ -5,3 +5,7 @@ type CreateExerciseDTO struct {
 	Description string `json:"description"`
 	Img         string `json:"img"`
 }
+
+type WorkoutIdsDTO struct {
+	WorkoutIds []int `json:"workoutIds"`
+}

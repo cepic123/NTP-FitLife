@@ -17,6 +17,8 @@ import { TableModule } from 'primeng/table';
 import { ExerciseComponent } from './exercise/exercise.component';
 import { DialogModule } from 'primeng/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserWorkoutsComponent } from './user-workouts/user-workouts.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NavbarComponent,
     LoginComponent,
     WorkoutComponent,
-    ExerciseComponent
+    ExerciseComponent,
+    UserWorkoutsComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ButtonModule,
     TableModule,
     DialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    InputTextareaModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

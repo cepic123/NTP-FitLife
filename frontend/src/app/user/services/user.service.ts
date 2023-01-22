@@ -9,7 +9,11 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Object> {
-    return this.http.get<Object>('/api/user');
+  createUser(username: string, email: string, password: string): Observable<string> {
+    return this.http.post<string>('/api/user', {
+      username: username,
+      password: password,
+      email: email,
+    });
   }
 }

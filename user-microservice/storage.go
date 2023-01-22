@@ -11,13 +11,23 @@ import (
 
 type StorageInterface interface {
 	CreateUser(*User) error
+	CreateUserWorkout(*UserWorkout) error
 	DeleteUser(int) error
 	GetUser(int) (*User, error)
+	GetUserWorkouts(int) (*[]UserWorkout, error)
 	GetAllUsers() (*[]User, error)
 }
 
 type Storage struct {
 	db *gorm.DB
+}
+
+func (s *Storage) CreateUserWorkout(userWorkout *UserWorkout) error {
+	fmt.Println("CREATING REFERENCE")
+	if result := s.db.Create(userWorkout); result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
 
 func (s *Storage) CreateUser(user *User) error {
@@ -36,8 +46,14 @@ func (s *Storage) DeleteUser(id int) error {
 	return nil
 }
 
-func (s *Storage) GetUser(int) (*User, error) {
-	return nil, nil
+func (s *Storage) GetUser(id int) (*User, error) {
+	var user = User{ID: id}
+
+	result := s.db.Find(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &user, nil
 }
 
 func (s *Storage) GetAllUsers() (*[]User, error) {
@@ -50,8 +66,18 @@ func (s *Storage) GetAllUsers() (*[]User, error) {
 	return &users, nil
 }
 
+func (s *Storage) GetUserWorkouts(userId int) (*[]UserWorkout, error) {
+	var userWorkouts []UserWorkout
+
+	result := s.db.Where(&UserWorkout{UserID: userId}).Find(&userWorkouts)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &userWorkouts, nil
+}
+
 func NewStorage() (*Storage, error) {
-	connStr := "user=postgres dbname=user-microservice password=root sslmode=disable"
+	connStr := "user=postgres dbname=userDB password=root sslmode=disable"
 	PgDB, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
@@ -69,7 +95,7 @@ func NewStorage() (*Storage, error) {
 		return nil, err
 	}
 	//TODO: PUT THIS SOMHERE ELSE
-	db.AutoMigrate()
+	db.AutoMigrate(&User{}, &UserWorkout{})
 
 	return &Storage{
 		db: db,

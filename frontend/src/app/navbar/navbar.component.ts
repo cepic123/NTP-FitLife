@@ -7,7 +7,7 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
+  
   items: MenuItem[] = [
     {
       label: 'Login',
@@ -23,6 +23,11 @@ export class NavbarComponent implements OnInit {
       label: 'Workout',
       icon: 'pi pi-fw pi-sign-in',
       routerLink: '/workout',
+    },
+    {
+      label: 'My Workouts',
+      icon: 'pi pi-fw pi-sign-in',
+      routerLink: '/user-workouts',
     },
     {
       label: 'Exercise',

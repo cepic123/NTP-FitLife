@@ -1,1 +1,45 @@
-<p>create-user works!</p>
+<h1>Register</h1>
+<div class="card">
+    <div class="p-formgroup-inline">
+        <div class="p-field">
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="username"
+          />
+        </div>
+        <br>
+        <div class="p-field">
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="email"
+          />
+        </div>
+        <br>
+        <div class="p-field">
+            <input
+            type="password"
+            pInputText
+            [(ngModel)]="password1"
+          />
+        </div>
+        <br>
+        <div class="p-field">
+            <input
+            type="password"
+            pInputText
+            [(ngModel)]="password2"
+          />
+        </div>
+        <br>
+        <button
+          pButton
+          [disabled]="validate()"
+          type="button"
+          label="Submit"
+          (click)="createUser()"
+          id="submit-search"
+        ></button>
+      </div>
+  </div>

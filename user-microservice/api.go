@@ -30,6 +30,11 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/user", makeHTTPHandleFunc(s.handleUser))
 	router.HandleFunc("/user/{id}", makeHTTPHandleFunc(s.handleUser))
 
+	router.HandleFunc("/userWorkoutRefs/{id}", makeHTTPHandleFunc(s.handleGetUserWorkouts))
+
+	//ADD WORKOUT TO USER
+	router.HandleFunc("/user/{userId}/{workoutId}", makeHTTPHandleFunc(s.handleAddWorkoutToUser))
+
 	fmt.Println("Server running on PORT: ", s.listenAddr)
 
 	c := cors.New(cors.Options{
@@ -58,13 +63,35 @@ func (s *APIServer) handleUser(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+func (s *APIServer) handleGetUserWorkouts(w http.ResponseWriter, r *http.Request) error {
+	userId, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	userWorkouts, err := s.storage.GetUserWorkouts(userId)
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, userWorkouts)
+}
+
+func (s *APIServer) handleAddWorkoutToUser(w http.ResponseWriter, r *http.Request) error {
+	userId, _ := strconv.Atoi(mux.Vars(r)["userId"])
+	workoutId, _ := strconv.Atoi(mux.Vars(r)["workoutId"])
+
+	userWorkout := NewUserWorkout(userId, workoutId)
+	err := s.storage.CreateUserWorkout(userWorkout)
+
+	return WriteJSON(w, http.StatusOK, err)
+}
+
 func (s *APIServer) handleLoginUser(w http.ResponseWriter, r *http.Request) error {
 	createUserDTO := new(CreateUserDTO)
 	if err := json.NewDecoder(r.Body).Decode(createUserDTO); err != nil {
 		return err
 	}
 
-	user := NewUser(createUserDTO.Username, createUserDTO.Password)
+	user := NewUser(createUserDTO.Username, createUserDTO.Password, createUserDTO.Email)
 
 	tokenString, err := createJWT(user)
 	if err != nil {
@@ -80,7 +107,7 @@ func (s *APIServer) handleCreateUser(w http.ResponseWriter, r *http.Request) err
 		return err
 	}
 
-	user := NewUser(createUserDTO.Username, createUserDTO.Password)
+	user := NewUser(createUserDTO.Username, createUserDTO.Password, createUserDTO.Email)
 	if err := s.storage.CreateUser(user); err != nil {
 		return err
 	}
@@ -117,7 +144,7 @@ func (s *APIServer) handleGetUser(w http.ResponseWriter, r *http.Request) error 
 func createJWT(user *User) (string, error) {
 	claims := &jwt.MapClaims{
 		"expiresAt": 15000,
-		"username":  user.Username,
+		"username":  user.Email,
 	}
 
 	secret := "cepic"
