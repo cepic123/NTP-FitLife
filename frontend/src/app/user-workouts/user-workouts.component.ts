@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Workout } from '../models/workout';
+import { Comment } from '../models/comment';
 import { UserWorkoutsService } from './services/user-workouts.service';
+import { CommentService } from '../comment/comment.service';
 
 @Component({
   selector: 'app-user-workouts',
@@ -9,7 +11,10 @@ import { UserWorkoutsService } from './services/user-workouts.service';
 })
 export class UserWorkoutsComponent implements OnInit {
 
-  comment: string = "";
+  comment: Comment = {
+    comment: ""
+  };
+  selectedWorkout: number = 0;
   displayWorkout: boolean = false;
   displayCommentDialog: boolean = false;
   workouts: Workout[] = [];
@@ -19,14 +24,25 @@ export class UserWorkoutsComponent implements OnInit {
     sets: []
   }
 
-  constructor(private userWorkoutsService: UserWorkoutsService) { }
+  constructor(private userWorkoutsService: UserWorkoutsService,
+    private commentService: CommentService) { }
 
   ngOnInit(): void {
     this.getUserWorkouts();
   }
 
   createComment() {
-    alert("Create Comment");
+    this.comment.userID = 1; //TODO: READ FROM LOCALSTORAGE
+    this.comment.username = "MOCKUSER"; //TODO: READ FROM LOCALSTORAGE
+    this.comment.subjectID = this.selectedWorkout;
+    this.comment.commentType = "WORKOUT";
+    this.commentService.createComment(this.comment).subscribe((data) => {
+      console.log(data);
+    })
+  }
+
+  validateComment() {
+    return this.comment.comment.length < 10
   }
 
   showDetailed(workoutId: number) {
@@ -58,7 +74,11 @@ export class UserWorkoutsComponent implements OnInit {
     this.displayWorkout = true;
   }
 
-  openCommentDialog() {
+  openCommentDialog(workoutId: number) {
+    this.selectedWorkout = workoutId;
+    this.commentService.getCommentByUserAndSubject(1, workoutId, "WORKOUT").subscribe((data) => {
+      this.comment = data;
+    })
     this.displayCommentDialog = true;
   }
 }

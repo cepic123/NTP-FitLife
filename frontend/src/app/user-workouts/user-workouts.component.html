@@ -17,7 +17,7 @@
                 <button pButton type="button" label="Details" (click)="showDetailed(workout.id)"></button>
             </td>
             <td>
-                <button pButton type="button" label="Comment/Rate" (click)="openCommentDialog()"></button>
+                <button pButton type="button" label="Comment/Rate" (click)="openCommentDialog(workout.id)"></button>
             </td>
         </tr>
         </ng-template>
@@ -43,9 +43,9 @@
 <p-dialog [(visible)]="displayCommentDialog">
     <div>
         <h1>Leave a Comment</h1>
-        <textarea pInputTextarea [(ngModel)]="comment"></textarea>
+        <textarea pInputTextarea [(ngModel)]="comment.comment"></textarea>
         <br>
-        <button pButton type="button" label="Save comment" (click)="createComment()"></button>
+        <button pButton [disabled]="validateComment()" type="button" label="Save comment" (click)="createComment()"></button>
     </div>
     <div>
         <h1>Leave Rating</h1>

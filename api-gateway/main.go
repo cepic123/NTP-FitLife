@@ -36,6 +36,10 @@ func main() {
 	router.HandleFunc("/workout", redirect("http://localhost:3002"))
 	router.HandleFunc("/workout/{id}", redirect("http://localhost:3002"))
 
+	//COMMENT MICROSERVICE
+	router.HandleFunc("/comment", redirect("http://localhost:3003"))
+	router.HandleFunc("/comment/{userId}/{workoutId}/{commentType}", redirect("http://localhost:3003"))
+
 	http.ListenAndServe(":3000", router)
 }
 
