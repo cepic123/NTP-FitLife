@@ -2,8 +2,10 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Clone)]
 pub struct CreateComplaintDTO {
-    pub user_id: usize,
-    pub complaint_subject_id: usize,
+    pub user_id: i32,
+    pub user_name: String,
+    pub subject_name: String,
+    pub complaint_subject_id: i32,
     pub complaint_text: String,
 }
 

@@ -40,6 +40,12 @@ func main() {
 	router.HandleFunc("/comment", redirect("http://localhost:3003"))
 	router.HandleFunc("/comment/{userId}/{workoutId}/{commentType}", redirect("http://localhost:3003"))
 
+	//COMPLAINT SERVICE
+	router.HandleFunc("/complaint", redirect("http://localhost:4001"))
+	router.HandleFunc("/complaint/{id}", redirect("http://localhost:4001"))
+	router.HandleFunc("/complaint/user/{id}", redirect("http://localhost:4001"))
+	router.HandleFunc("/complaint/subject/{id}", redirect("http://localhost:4001"))
+
 	http.ListenAndServe(":3000", router)
 }
 
@@ -88,7 +94,6 @@ func redirect(redirectAddr string) http.HandlerFunc {
 
 		var req *http.Request
 		var data []byte
-
 		if r.Method == http.MethodPost {
 			data, _ := ioutil.ReadAll(r.Body)
 			req, _ = http.NewRequest(http.MethodPost, redirectAddr+r.URL.String(), bytes.NewBuffer(data))
@@ -100,7 +105,7 @@ func redirect(redirectAddr string) http.HandlerFunc {
 
 		res, err := client.Do(req)
 		if err != nil {
-			// log.Fatalln(err)
+			fmt.Println(err)
 			return
 		}
 		defer res.Body.Close()
