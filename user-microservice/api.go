@@ -29,6 +29,7 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/login", makeHTTPHandleFunc(s.handleLoginUser))
 	router.HandleFunc("/user", makeHTTPHandleFunc(s.handleUser))
 	router.HandleFunc("/user/{id}", makeHTTPHandleFunc(s.handleUser))
+	router.HandleFunc("/user/validate/{username}/{password}", makeHTTPHandleFunc(s.handleValidateUser))
 
 	router.HandleFunc("/userWorkoutRefs/{id}", makeHTTPHandleFunc(s.handleGetUserWorkouts))
 
@@ -75,6 +76,24 @@ func (s *APIServer) handleGetUserWorkouts(w http.ResponseWriter, r *http.Request
 	return WriteJSON(w, http.StatusOK, userWorkouts)
 }
 
+func (s *APIServer) handleValidateUser(w http.ResponseWriter, r *http.Request) error {
+	username := mux.Vars(r)["username"]
+	password := mux.Vars(r)["password"]
+
+	user, err := s.storage.ValidateUser(username, password)
+
+	fmt.Println(user)
+	if err != nil {
+		return nil
+	}
+
+	if user == nil {
+		return nil
+	}
+
+	return WriteJSON(w, http.StatusOK, user)
+}
+
 func (s *APIServer) handleAddWorkoutToUser(w http.ResponseWriter, r *http.Request) error {
 	userId, _ := strconv.Atoi(mux.Vars(r)["userId"])
 	workoutId, _ := strconv.Atoi(mux.Vars(r)["workoutId"])
@@ -85,29 +104,17 @@ func (s *APIServer) handleAddWorkoutToUser(w http.ResponseWriter, r *http.Reques
 	return WriteJSON(w, http.StatusOK, err)
 }
 
-func (s *APIServer) handleLoginUser(w http.ResponseWriter, r *http.Request) error {
-	createUserDTO := new(CreateUserDTO)
-	if err := json.NewDecoder(r.Body).Decode(createUserDTO); err != nil {
-		return err
-	}
-
-	user := NewUser(createUserDTO.Username, createUserDTO.Password, createUserDTO.Email)
-
-	tokenString, err := createJWT(user)
-	if err != nil {
-		return err
-	}
-
-	return WriteJSON(w, http.StatusOK, tokenString)
-}
-
 func (s *APIServer) handleCreateUser(w http.ResponseWriter, r *http.Request) error {
 	createUserDTO := new(CreateUserDTO)
 	if err := json.NewDecoder(r.Body).Decode(createUserDTO); err != nil {
 		return err
 	}
 
-	user := NewUser(createUserDTO.Username, createUserDTO.Password, createUserDTO.Email)
+	if createUserDTO.Role != "user" && createUserDTO.Role != "coach" {
+		return WriteJSON(w, http.StatusInternalServerError, nil)
+	}
+
+	user := NewUser(createUserDTO.Username, createUserDTO.Password, createUserDTO.Email, createUserDTO.Role)
 	if err := s.storage.CreateUser(user); err != nil {
 		return err
 	}
@@ -141,10 +148,34 @@ func (s *APIServer) handleGetUser(w http.ResponseWriter, r *http.Request) error 
 	return WriteJSON(w, http.StatusOK, vars)
 }
 
+func (s *APIServer) handleLoginUser(w http.ResponseWriter, r *http.Request) error {
+	loginUserDTO := new(LoginUserDTO)
+	if err := json.NewDecoder(r.Body).Decode(loginUserDTO); err != nil {
+		return err
+	}
+
+	user, err := s.storage.ValidateUser(loginUserDTO.Username, loginUserDTO.Password)
+
+	fmt.Println(user)
+	if err != nil {
+		return err
+	}
+
+	tokenString, err := createJWT(user)
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, tokenString)
+}
+
 func createJWT(user *User) (string, error) {
 	claims := &jwt.MapClaims{
 		"expiresAt": 15000,
-		"username":  user.Email,
+		"username":  user.Username,
+		"password":  user.Password,
+		"id":        user.ID,
+		"role":      user.Role,
 	}
 
 	secret := "cepic"

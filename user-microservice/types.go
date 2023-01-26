@@ -8,8 +8,9 @@ type User struct {
 	gorm.Model
 	ID           int           `json:"id" gorm:"primaryKey"`
 	Email        string        `json:"email" gorm:"uniqueIndex"`
-	Username     string        `json:"username"`
+	Username     string        `json:"username" gorm:"uniqueIndex"`
 	Password     string        `json:"password"`
+	Role         string        `json:"role"`
 	UserWorkouts []UserWorkout `json:"userWorkouts"`
 }
 
@@ -20,11 +21,12 @@ type UserWorkout struct {
 	WorkoutReferenceID int `json:"workoutReferenceID"`
 }
 
-func NewUser(username, password, email string) *User {
+func NewUser(username, password, email, role string) *User {
 	return &User{
 		Username:     username,
 		Password:     password,
 		Email:        email,
+		Role:         role,
 		UserWorkouts: []UserWorkout{},
 	}
 }

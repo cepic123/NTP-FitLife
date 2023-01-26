@@ -16,6 +16,7 @@ type StorageInterface interface {
 	GetUser(int) (*User, error)
 	GetUserWorkouts(int) (*[]UserWorkout, error)
 	GetAllUsers() (*[]User, error)
+	ValidateUser(string, string) (*User, error)
 }
 
 type Storage struct {
@@ -44,6 +45,17 @@ func (s *Storage) DeleteUser(id int) error {
 		return result.Error
 	}
 	return nil
+}
+
+func (s *Storage) ValidateUser(username, password string) (*User, error) {
+	// var user = User{Username: username, Password: password}
+	var user User
+
+	result := s.db.Where(&User{Username: username, Password: password}).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &user, nil
 }
 
 func (s *Storage) GetUser(id int) (*User, error) {
