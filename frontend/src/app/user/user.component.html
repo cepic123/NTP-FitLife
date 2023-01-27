@@ -1,6 +1,6 @@
-<h1>Register</h1>
 <div class="card">
     <div class="p-formgroup-inline">
+        <h5>Username</h5>
         <div class="p-field">
           <input
             type="text"
@@ -9,6 +9,7 @@
           />
         </div>
         <br>
+        <h5>Email</h5>
         <div class="p-field">
           <input
             type="text"
@@ -17,6 +18,7 @@
           />
         </div>
         <br>
+        <h5>Password</h5>
         <div class="p-field">
             <input
             type="password"
@@ -25,6 +27,7 @@
           />
         </div>
         <br>
+        <h5>Confirm Password</h5>
         <div class="p-field">
             <input
             type="password"
@@ -32,6 +35,10 @@
             [(ngModel)]="password2"
           />
         </div>
+        <br>
+        <h5>Role</h5>
+        <p-dropdown [options]="roles" [(ngModel)]="role" optionLabel="name"></p-dropdown>
+        <br>
         <br>
         <button
           pButton

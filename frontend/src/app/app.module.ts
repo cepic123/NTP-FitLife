@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './router/app-routing.module';
 import { MenubarModule } from 'primeng/menubar';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginComponent } from './login/login.component';
@@ -19,6 +19,8 @@ import { DialogModule } from 'primeng/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserWorkoutsComponent } from './user-workouts/user-workouts.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { LogoutComponent } from './logout/logout.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     LoginComponent,
     WorkoutComponent,
     ExerciseComponent,
-    UserWorkoutsComponent
+    UserWorkoutsComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     TableModule,
     DialogModule,
     BrowserAnimationsModule,
-    InputTextareaModule
+    InputTextareaModule,
+    DropdownModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

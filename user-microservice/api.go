@@ -166,7 +166,13 @@ func (s *APIServer) handleLoginUser(w http.ResponseWriter, r *http.Request) erro
 		return err
 	}
 
-	return WriteJSON(w, http.StatusOK, tokenString)
+	loginResponseDTO := &LoginResponseDTO{
+		ID:       user.ID,
+		Username: user.Username,
+		Token:    tokenString,
+		Role:     user.Role,
+	}
+	return WriteJSON(w, http.StatusOK, loginResponseDTO)
 }
 
 func createJWT(user *User) (string, error) {

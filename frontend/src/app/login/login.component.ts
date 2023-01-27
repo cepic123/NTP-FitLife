@@ -20,7 +20,12 @@ export class LoginComponent implements OnInit {
   
   login() {
     this.LoginService.login(this.username, this.password).subscribe((data) => {
-      localStorage.setItem('x-jwt-token', data)
+      localStorage.setItem('x-jwt-token', data.token)
+      localStorage.setItem('userId', data.id.toString())
+      localStorage.setItem('role', data.role)
+      localStorage.setItem('username', data.username)
+      localStorage.setItem('isLoggedIn', 'true')
+      this.LoginService.emitLoginEvent();
     })
   }
 

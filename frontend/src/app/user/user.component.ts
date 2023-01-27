@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Role } from '../models/user';
 import { UserService } from './services/user.service';
 
 @Component({
@@ -13,6 +14,15 @@ export class UserComponent implements OnInit {
   password1: string = ""
   password2: string = ""
 
+  roles: Role[] = [
+    {name: 'User', code: 'user'},
+    {name: 'Coach', code: 'coach'},
+  ];
+  role: Role = {
+    name: 'User', 
+    code: 'user'
+  };
+
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
@@ -20,7 +30,7 @@ export class UserComponent implements OnInit {
   }
 
   createUser() {
-    this.userService.createUser(this.username, this.email, this.password1).subscribe((data) => {
+    this.userService.createUser(this.username, this.email, this.password1, this.role.code).subscribe((data) => {
       alert(data);
     })
   }

@@ -31,11 +31,13 @@ export class UserWorkoutsComponent implements OnInit {
     this.getUserWorkouts();
   }
 
-  createComment() {
-    this.comment.userID = 1; //TODO: READ FROM LOCALSTORAGE
-    this.comment.username = "MOCKUSER"; //TODO: READ FROM LOCALSTORAGE
+  createComment(commentType: string) {
+    var userId = localStorage.getItem("userId");
+    this.comment.userID = userId ?  parseInt(userId) : 0; 
+    var username = localStorage.getItem("username");
+    this.comment.username = username ? username : undefined; 
     this.comment.subjectID = this.selectedWorkout;
-    this.comment.commentType = "WORKOUT";
+    this.comment.commentType = commentType;
     this.commentService.createComment(this.comment).subscribe((data) => {
       console.log(data);
     })

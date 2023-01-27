@@ -45,7 +45,7 @@
         <h1>Leave a Comment</h1>
         <textarea pInputTextarea [(ngModel)]="comment.comment"></textarea>
         <br>
-        <button pButton [disabled]="validateComment()" type="button" label="Save comment" (click)="createComment()"></button>
+        <button pButton [disabled]="validateComment()" type="button" label="Save comment" (click)="createComment('WORKOUT')"></button>
     </div>
     <div>
         <h1>Leave Rating</h1>
