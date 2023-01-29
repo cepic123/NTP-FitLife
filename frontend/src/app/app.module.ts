@@ -21,6 +21,8 @@ import { UserWorkoutsComponent } from './user-workouts/user-workouts.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { LogoutComponent } from './logout/logout.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { AllWorkoutsComponent } from './all-workouts/all-workouts.component';
+import { RatingModule } from 'primeng/rating';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { DropdownModule } from 'primeng/dropdown';
     WorkoutComponent,
     ExerciseComponent,
     UserWorkoutsComponent,
-    LogoutComponent
+    LogoutComponent,
+    AllWorkoutsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import { DropdownModule } from 'primeng/dropdown';
     DialogModule,
     BrowserAnimationsModule,
     InputTextareaModule,
-    DropdownModule
+    DropdownModule,
+    RatingModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

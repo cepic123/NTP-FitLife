@@ -13,4 +13,11 @@ export class WorkoutService {
   createWorkout(workout?: Workout): Observable<Object>{
     return this.http.post<Object>('/api/workout', workout);
   }
+ 
+  getAllWorkouts(): Observable<Workout[]> {
+    return this.http.post<Workout[]>('/api/userWorkouts', {
+      workoutIds: null
+      }
+    );
+  }
 }

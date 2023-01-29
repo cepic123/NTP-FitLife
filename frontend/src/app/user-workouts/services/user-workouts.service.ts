@@ -25,4 +25,8 @@ export class UserWorkoutsService {
   getWorkout(workoutId?: number): Observable<Workout> {
     return this.http.get<Workout>('/api/workout/' + workoutId);
   }
+
+  removeFromUser(userId: number, workoutId: number): Observable<string> {
+    return this.http.delete<string>('/api/user/' + userId + '/' + workoutId);
+  }
 }

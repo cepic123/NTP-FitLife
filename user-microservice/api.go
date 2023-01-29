@@ -34,7 +34,8 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/userWorkoutRefs/{id}", makeHTTPHandleFunc(s.handleGetUserWorkouts))
 
 	//ADD WORKOUT TO USER
-	router.HandleFunc("/user/{userId}/{workoutId}", makeHTTPHandleFunc(s.handleAddWorkoutToUser))
+	// router.HandleFunc("/user/{userId}/{workoutId}", makeHTTPHandleFunc(s.handleAddWorkoutToUser))
+	router.HandleFunc("/user/{userId}/{workoutId}", makeHTTPHandleFunc(s.handleWorkoutToUser))
 
 	fmt.Println("Server running on PORT: ", s.listenAddr)
 
@@ -48,6 +49,20 @@ func (s *APIServer) Run() {
 	handler := c.Handler(router)
 	fmt.Println("HEREY")
 	http.ListenAndServe(s.listenAddr, handler)
+}
+
+func (s *APIServer) handleWorkoutToUser(w http.ResponseWriter, r *http.Request) error {
+	if r.Method == "GET" {
+		return s.handleGetAllUsers(w, r)
+	}
+	if r.Method == "POST" {
+		return s.handleAddWorkoutToUser(w, r)
+	}
+	if r.Method == "DELETE" {
+		return s.handleRemoveWorkoutFromUser(w, r)
+	}
+
+	return nil
 }
 
 func (s *APIServer) handleUser(w http.ResponseWriter, r *http.Request) error {
@@ -94,12 +109,37 @@ func (s *APIServer) handleValidateUser(w http.ResponseWriter, r *http.Request) e
 	return WriteJSON(w, http.StatusOK, user)
 }
 
+func (s *APIServer) handleRemoveWorkoutFromUser(w http.ResponseWriter, r *http.Request) error {
+	userId, _ := strconv.Atoi(mux.Vars(r)["userId"])
+	workoutId, _ := strconv.Atoi(mux.Vars(r)["workoutId"])
+
+	var result, err = s.storage.GetUserWorkout(userId, workoutId)
+	fmt.Println(result)
+	fmt.Println(userId)
+	fmt.Println(workoutId)
+
+	empUser := UserWorkout{}
+	if *result == empUser {
+		return WriteJSON(w, http.StatusInternalServerError, ApiError{"Pair doesn't exist in database"})
+	}
+
+	err = s.storage.DeleteUserWorkout(result.ID)
+
+	return WriteJSON(w, http.StatusOK, err)
+}
+
 func (s *APIServer) handleAddWorkoutToUser(w http.ResponseWriter, r *http.Request) error {
 	userId, _ := strconv.Atoi(mux.Vars(r)["userId"])
 	workoutId, _ := strconv.Atoi(mux.Vars(r)["workoutId"])
 
+	var result, err = s.storage.GetUserWorkout(userId, workoutId)
+	empUser := UserWorkout{}
+	if *result != empUser {
+		return WriteJSON(w, http.StatusInternalServerError, ApiError{"Pair already exists in database"})
+	}
+
 	userWorkout := NewUserWorkout(userId, workoutId)
-	err := s.storage.CreateUserWorkout(userWorkout)
+	err = s.storage.CreateUserWorkout(userWorkout)
 
 	return WriteJSON(w, http.StatusOK, err)
 }

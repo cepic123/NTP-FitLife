@@ -13,7 +13,9 @@ type StorageInterface interface {
 	CreateUser(*User) error
 	CreateUserWorkout(*UserWorkout) error
 	DeleteUser(int) error
+	DeleteUserWorkout(int) error
 	GetUser(int) (*User, error)
+	GetUserWorkout(int, int) (*UserWorkout, error)
 	GetUserWorkouts(int) (*[]UserWorkout, error)
 	GetAllUsers() (*[]User, error)
 	ValidateUser(string, string) (*User, error)
@@ -41,6 +43,14 @@ func (s *Storage) CreateUser(user *User) error {
 
 func (s *Storage) DeleteUser(id int) error {
 	result := s.db.Delete(&User{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *Storage) DeleteUserWorkout(id int) error {
+	result := s.db.Delete(&UserWorkout{}, id)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -82,6 +92,16 @@ func (s *Storage) GetUserWorkouts(userId int) (*[]UserWorkout, error) {
 	var userWorkouts []UserWorkout
 
 	result := s.db.Where(&UserWorkout{UserID: userId}).Find(&userWorkouts)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &userWorkouts, nil
+}
+
+func (s *Storage) GetUserWorkout(userId, workoutId int) (*UserWorkout, error) {
+	var userWorkouts UserWorkout
+
+	result := s.db.Where(&UserWorkout{UserID: userId, WorkoutReferenceID: workoutId}).Find(&userWorkouts)
 	if result.Error != nil {
 		return nil, result.Error
 	}

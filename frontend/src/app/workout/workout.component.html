@@ -26,8 +26,8 @@
     </div>
 </div>
 
-<button pButton type="button" label="Create workout" (click)="creaeteWorkout()"></button>
-<button pButton type="button" label="SHOW JSON" (click)="createWorkoutJSON()"></button>
+<button pButton type="button" [disabled]="validateWorkout()" label="Create workout" (click)="creaeteWorkout()"></button>
+<!-- <button pButton type="button" label="SHOW JSON" (click)="createWorkoutJSON()"></button> -->
 
 <p-dialog header="Add rep dialog" [(visible)]="display">
     <div style="display: inline-flex; margin: 10px;">
@@ -62,3 +62,4 @@
         </div>
       </div>
 </p-dialog>
+

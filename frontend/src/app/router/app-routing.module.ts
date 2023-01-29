@@ -22,8 +22,10 @@ import {
 } from '../user-workouts/user-workouts.component';
 import { AuthGuard } from './auth.guard';
 import { LogoutComponent } from '../logout/logout.component';
+import { AllWorkoutsComponent } from '../all-workouts/all-workouts.component';
 
-const routes: Routes = [{
+const routes: Routes = [
+  {
     path: 'user',
     component: UserComponent,
   },
@@ -59,8 +61,11 @@ const routes: Routes = [{
     path: 'user-workouts',
     component: UserWorkoutsComponent
   },
+  {
+    path: 'all-workouts',
+    component: AllWorkoutsComponent
+  },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

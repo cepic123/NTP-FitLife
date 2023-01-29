@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExerciseService } from '../exercise/services/exercise.service';
 import { CreateExerciseDTO, Exercise } from '../models/exercise';
 import { Workout, Set, Rep } from '../models/workout';
+import { UserWorkoutsService } from '../user-workouts/services/user-workouts.service';
 import { WorkoutService } from './services/workout.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class WorkoutComponent implements OnInit {
   newRepNoReps: number = 0;
 
   display: boolean = false;
+  displayWorkout: boolean = false;
 
   workout: Workout = {
     name: "",
@@ -24,13 +26,12 @@ export class WorkoutComponent implements OnInit {
 
   exerciseToAdd?: Exercise;
 
-  workouts: Workout[] = [];
-
   exercises: Exercise[] = [];
 
   constructor(
     private workoutService: WorkoutService,
     private exerciseService: ExerciseService,
+    private userWorkoutsService: UserWorkoutsService,
     ) { }
 
   ngOnInit(): void {
@@ -47,14 +48,24 @@ export class WorkoutComponent implements OnInit {
     console.log(JSON.stringify(this.workout))
   }
 
+  validateWorkout() {
+    if (this.workout.name && this.workout.name.length > 5 
+      && this.workout.description && this.workout.description.length > 5) return false;
+    return true;
+  }
+
   creaeteWorkout() {
     this.workoutService.createWorkout(this.workout).subscribe((data) => {
-      alert("Here");
     })
   }
+
   validateRep() {
     if (this.newRepNoReps > 0 && this.exerciseToAdd) return false;
     return true;
+  }
+  
+  showWorkoutDialog() {
+    this.displayWorkout = true;
   }
 
   addRep() {
@@ -66,7 +77,6 @@ export class WorkoutComponent implements OnInit {
     this.workout.sets[this.setNum].reps?.push(rep);
     this.exerciseToAdd = undefined;
     this.newRepNoReps = 0;
-    this.setNum = 0;
   }
 
   addSet() {

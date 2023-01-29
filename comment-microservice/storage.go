@@ -11,6 +11,7 @@ import (
 
 type StorageInterface interface {
 	CreateComment(*Comment) error
+	UpdateComment(*Comment) error
 	GetCommentBySubjectAndUser(int, int, string) (*Comment, error)
 }
 
@@ -27,6 +28,14 @@ func (s *Storage) GetCommentBySubjectAndUser(userId, subjectId int, commentType 
 func (s *Storage) CreateComment(comment *Comment) error {
 	fmt.Println("CREATING COMMENT")
 	if result := s.db.Create(comment); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *Storage) UpdateComment(comment *Comment) error {
+	fmt.Println("UPDATING COMMENT")
+	if result := s.db.Save(comment); result.Error != nil {
 		return result.Error
 	}
 	return nil

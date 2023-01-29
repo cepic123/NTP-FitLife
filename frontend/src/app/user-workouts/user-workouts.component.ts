@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Workout } from '../models/workout';
 import { Comment } from '../models/comment';
+import { Rating } from '../models/rating';
 import { UserWorkoutsService } from './services/user-workouts.service';
 import { CommentService } from '../comment/comment.service';
+import { RatingService } from '../rating/rating.service';
 
 @Component({
   selector: 'app-user-workouts',
@@ -23,13 +25,29 @@ export class UserWorkoutsComponent implements OnInit {
     description: "",
     sets: []
   }
+  commentExists: boolean = false;
+  rating: Rating = {
+    rating: 0 
+  }
+  ratingExists: boolean = false;
 
   constructor(private userWorkoutsService: UserWorkoutsService,
-    private commentService: CommentService) { }
+    private commentService: CommentService,
+    private ratingService: RatingService) { }
 
   ngOnInit(): void {
     this.getUserWorkouts();
   }
+
+  removeFromUser(workoutId: number) {
+    var userId = localStorage.getItem("userId");
+    if (userId) {
+      this.userWorkoutsService.removeFromUser(parseInt(userId), workoutId).subscribe((data) => {
+        alert(data);
+        this.getUserWorkouts();
+      })
+    }
+  } 
 
   createComment(commentType: string) {
     var userId = localStorage.getItem("userId");
@@ -39,6 +57,30 @@ export class UserWorkoutsComponent implements OnInit {
     this.comment.subjectID = this.selectedWorkout;
     this.comment.commentType = commentType;
     this.commentService.createComment(this.comment).subscribe((data) => {
+      console.log(data);
+    })
+  }
+
+  createRating(ratingType: string) {
+    var userId = localStorage.getItem("userId");
+    this.rating.userID = userId ?  parseInt(userId) : 0; 
+    var username = localStorage.getItem("username");
+    this.rating.username = username ? username : undefined; 
+    this.rating.subjectID = this.selectedWorkout;
+    this.rating.ratingType = ratingType;
+    this.ratingService.createRating(this.rating).subscribe((data) => {
+      console.log(data);
+    })
+  }
+
+  updateComment() {
+    this.commentService.updateComment(this.comment).subscribe((data) => {
+      console.log(data);
+    })
+  }
+
+  updateRating() {
+    this.ratingService.updateRating(this.rating).subscribe((data) => {
       console.log(data);
     })
   }
@@ -62,13 +104,15 @@ export class UserWorkoutsComponent implements OnInit {
       userIdNum = parseInt(userId);
     }
     var userWorkoutIds: number[] = [];
-    this.userWorkoutsService.getUserWorkoutReferences(1).subscribe((data) => {
+    this.userWorkoutsService.getUserWorkoutReferences(userIdNum).subscribe((data) => {
       for (var userWorkout of data) {
         userWorkoutIds.push(userWorkout.workoutReferenceID);
       }
-      this.userWorkoutsService.getUserWorkouts(userWorkoutIds).subscribe((data) => {
-        this.workouts = data;
-      })
+      if (userWorkoutIds.length > 0) {
+        this.userWorkoutsService.getUserWorkouts(userWorkoutIds).subscribe((data) => {
+          this.workouts = data;
+        })
+      }
     })
   }
 
@@ -78,9 +122,22 @@ export class UserWorkoutsComponent implements OnInit {
 
   openCommentDialog(workoutId: number) {
     this.selectedWorkout = workoutId;
-    this.commentService.getCommentByUserAndSubject(1, workoutId, "WORKOUT").subscribe((data) => {
-      this.comment = data;
-    })
-    this.displayCommentDialog = true;
+    var userId = localStorage.getItem("userId");
+    if (userId) {
+      this.commentService.getCommentByUserAndSubject(parseInt(userId), workoutId, "WORKOUT").subscribe((data) => {
+        this.commentExists = data.comment !== "";
+        this.comment = data ? data : {
+          comment: ""
+        };
+      });
+      this.ratingService.getRatingByUserAndSubject(parseInt(userId), workoutId, "WORKOUT").subscribe((data) => {
+        this.ratingExists = data.username !== "";
+        this.rating = data ? data : {
+          rating: 0
+        };
+        console.log(this.rating)
+      })
+      this.displayCommentDialog = true;
+    }
   }
 }

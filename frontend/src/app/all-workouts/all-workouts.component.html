@@ -1,0 +1,42 @@
+<h1>All Workouts</h1>
+<div class="card" style="margin: 10px;">
+    <p-table [value]="workouts">
+        <ng-template pTemplate="header">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-workout>
+        <tr>
+            <td>{{workout.name}}</td>
+            <td>{{workout.description}}</td>
+            <td>
+                <button pButton type="button" label="Details" (click)="showDetailed(workout.id)"></button>
+            </td>
+            <td>
+                <button pButton type="button" label="Add to my workouts" (click)="addWorkoutToUser(workout.id)"></button>
+            </td>
+        </tr>
+        </ng-template>
+    </p-table>
+  </div>
+  
+  <p-dialog [(visible)]="displayWorkout">
+    <div class="card" style="margin: 10px;">
+        <h1>{{workout.name}}</h1>
+        <div *ngFor="let set of workout.sets; index as i;" class="card" style="height: 200px; border: 1px solid;">
+            <p>Set {{set.orderNum}}</p>
+            <div *ngFor="let rep of set.reps; index as i;" class="card" style="border: 1px solid; float: left;">
+                <p>Rep {{rep.orderNum}}</p>
+                <p>No Reps: {{rep.noReps}}</p>
+                <p>Exercise: {{rep.exercise?.name}}</p>
+                <p>Exercise: {{rep.exercise?.description}}</p>
+            </div>
+            <br>
+        </div>
+    </div>
+  </p-dialog>

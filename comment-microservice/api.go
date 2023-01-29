@@ -67,6 +67,29 @@ func (s *APIServer) handleCreateComment(w http.ResponseWriter, r *http.Request) 
 	return WriteJSON(w, http.StatusOK, user)
 }
 
+func (s *APIServer) handleUpdateComment(w http.ResponseWriter, r *http.Request) error {
+
+	createCommentDTO := new(CreateCommentDTO)
+	if err := json.NewDecoder(r.Body).Decode(createCommentDTO); err != nil {
+		return err
+	}
+
+	comment, _ := s.storage.GetCommentBySubjectAndUser(createCommentDTO.UserID, createCommentDTO.SubjectID, createCommentDTO.CommentType)
+	comment.Comment = createCommentDTO.Comment
+	if comment.Comment == "" {
+		fmt.Println("COMMENT DOESNT EXIST")
+		fmt.Println(comment)
+		return WriteJSON(w, http.StatusOK, comment)
+	}
+
+	// updatedComment := NewComment(createCommentDTO.UserID, createCommentDTO.SubjectID, createCommentDTO.Username, createCommentDTO.Comment, createCommentDTO.CommentType)
+	if err := s.storage.UpdateComment(comment); err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, comment)
+}
+
 func (s *APIServer) handleDeleteComment(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
@@ -85,7 +108,9 @@ func (s *APIServer) handleComment(w http.ResponseWriter, r *http.Request) error 
 	if r.Method == "DELETE" {
 		return s.handleDeleteComment(w, r)
 	}
-
+	if r.Method == "PUT" {
+		return s.handleUpdateComment(w, r)
+	}
 	return nil
 }
 

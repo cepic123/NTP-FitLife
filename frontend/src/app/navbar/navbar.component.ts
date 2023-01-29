@@ -32,6 +32,11 @@ export class NavbarComponent implements OnInit {
       routerLink: '/user-workouts',
     },
     {
+      label: 'All Workouts',
+      icon: 'pi pi-fw pi-sign-in',
+      routerLink: '/all-workouts',
+    },
+    {
       label: 'Exercise',
       icon: 'pi pi-fw pi-sign-in',
       routerLink: '/exercise',
@@ -42,7 +47,6 @@ export class NavbarComponent implements OnInit {
       routerLink: '/logout',
     }
   ];
-
   // items: MenuItem[] = [
   //   {
   //     label: 'Login',

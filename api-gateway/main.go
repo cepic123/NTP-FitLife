@@ -48,6 +48,12 @@ func main() {
 	router.HandleFunc("/comment", redirect("http://localhost:3003"))
 	router.HandleFunc("/comment/{userId}/{workoutId}/{commentType}", redirect("http://localhost:3003"))
 
+	//COMMENT MICROSERVICE
+	router.HandleFunc("/rating", redirect("http://localhost:3004"))
+	router.HandleFunc("/rating/{id}", redirect("http://localhost:3004"))
+	router.HandleFunc("/rating/{subjectId}", redirect("http://localhost:3004"))
+	router.HandleFunc("/rating/{userId}/{workoutId}/{ratingType}", redirect("http://localhost:3004"))
+
 	//COMPLAINT SERVICE
 	router.HandleFunc("/complaint", redirect("http://localhost:4001"))
 	router.HandleFunc("/complaint/{id}", redirect("http://localhost:4001"))
@@ -177,6 +183,10 @@ func redirect(redirectAddr string) http.HandlerFunc {
 		if r.Method == http.MethodPost {
 			data, _ := ioutil.ReadAll(r.Body)
 			req, _ = http.NewRequest(http.MethodPost, redirectAddr+r.URL.String(), bytes.NewBuffer(data))
+		} else if r.Method == http.MethodPut {
+			data, _ := ioutil.ReadAll(r.Body)
+			req, _ = http.NewRequest(http.MethodPut, redirectAddr+r.URL.String(), bytes.NewBuffer(data))
+			req.Header.Set("Content-Type", "application/json; charset=utf-8")
 		} else if r.Method == http.MethodGet {
 			req, _ = http.NewRequest(http.MethodGet, redirectAddr+r.URL.String(), nil)
 		} else if r.Method == http.MethodDelete {

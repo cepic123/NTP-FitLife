@@ -14,6 +14,10 @@ export class CommentService {
     return this.http.post<Comment>('/api/comment', comment);
   }
 
+  updateComment(comment: Comment): Observable<Comment> {
+    return this.http.put<Comment>('/api/comment', comment);
+  }
+  
   getCommentByUserAndSubject(userId: number, workoutId: number, commentType: string): Observable<Comment> {
     return this.http.get<Comment>('/api/comment/' + userId + '/' + workoutId + '/' + commentType);
   }

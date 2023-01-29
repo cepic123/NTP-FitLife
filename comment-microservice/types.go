@@ -4,10 +4,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// TODO: BRISI ID OD SVUDA
 type Comment struct {
 	gorm.Model
-	ID          int    `json:"id" gorm:"primaryKey"`
 	UserID      int    `json:"userID"`
 	Username    string `json:"username"`
 	SubjectID   int    `json:"subjectID"`
