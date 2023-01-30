@@ -28,6 +28,7 @@ func (s *APIServer) Run() {
 
 	router.HandleFunc("/workout", makeHTTPHandleFunc(s.handleWorkout))
 	router.HandleFunc("/workout/{id}", makeHTTPHandleFunc(s.handleWorkout))
+	router.HandleFunc("/workout/rate/{id}/{rating}", makeHTTPHandleFunc(s.handleUpdateWorkoutRating))
 
 	router.HandleFunc("/userWorkouts", makeHTTPHandleFunc(s.handleGetUserWorkouts))
 
@@ -89,6 +90,30 @@ func (s *APIServer) handleGetUserWorkouts(w http.ResponseWriter, r *http.Request
 	}
 
 	return WriteJSON(w, http.StatusOK, workouts)
+}
+
+func (s *APIServer) handleUpdateWorkoutRating(w http.ResponseWriter, r *http.Request) error {
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+	rating, _ := strconv.Atoi(mux.Vars(r)["rating"])
+
+	workout, err := s.storage.GetWorkout(id)
+
+	if err != nil {
+		return err
+	}
+
+	workout.Rating = rating
+	if workout.Name == "" {
+		fmt.Println("WORKOUT DOESNT EXIST")
+		fmt.Println(workout)
+		return WriteJSON(w, http.StatusOK, workout)
+	}
+
+	if err := s.storage.UpdateRating(workout); err != nil {
+		return err
+	}
+	fmt.Println("")
+	return WriteJSON(w, http.StatusOK, workout)
 }
 
 func (s *APIServer) handleCreateWorkout(w http.ResponseWriter, r *http.Request) error {

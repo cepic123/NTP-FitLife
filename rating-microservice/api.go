@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -63,6 +64,13 @@ func (s *APIServer) handleCreateRating(w http.ResponseWriter, r *http.Request) e
 		return err
 	}
 
+	avgRating, err := s.storage.GetSubjectRating(createRatingDTO.SubjectID, createRatingDTO.RatingType)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(avgRating)
 	return WriteJSON(w, http.StatusOK, newRating)
 }
 
@@ -85,6 +93,23 @@ func (s *APIServer) handleUpdateRating(w http.ResponseWriter, r *http.Request) e
 		return err
 	}
 
+	avgRating, _ := s.storage.GetSubjectRating(createRatingDTO.SubjectID, createRatingDTO.RatingType)
+
+	if err := s.storage.UpdateRating(rating); err != nil {
+		return err
+	}
+	fmt.Println(avgRating)
+
+	client := &http.Client{
+		Timeout: time.Second * 10,
+	}
+	req, _ := http.NewRequest(http.MethodPut, "http://localhost:3000/workout/rate/"+strconv.Itoa(createRatingDTO.SubjectID)+"/"+strconv.Itoa(avgRating), nil)
+
+	_, err := client.Do(req)
+
+	if err != nil {
+		return err
+	}
 	return WriteJSON(w, http.StatusOK, rating)
 }
 

@@ -5,6 +5,7 @@ import { Rating } from '../models/rating';
 import { UserWorkoutsService } from './services/user-workouts.service';
 import { CommentService } from '../comment/comment.service';
 import { RatingService } from '../rating/rating.service';
+import { getSafePropertyAccessString } from '@angular/compiler';
 
 @Component({
   selector: 'app-user-workouts',
@@ -59,6 +60,7 @@ export class UserWorkoutsComponent implements OnInit {
     this.commentService.createComment(this.comment).subscribe((data) => {
       console.log(data);
     })
+    this.getComment(this.comment.userID, this.comment.subjectID);
   }
 
   createRating(ratingType: string) {
@@ -71,6 +73,7 @@ export class UserWorkoutsComponent implements OnInit {
     this.ratingService.createRating(this.rating).subscribe((data) => {
       console.log(data);
     })
+    this.getRating(this.rating.userID, this.rating.subjectID);
   }
 
   updateComment() {
@@ -124,20 +127,29 @@ export class UserWorkoutsComponent implements OnInit {
     this.selectedWorkout = workoutId;
     var userId = localStorage.getItem("userId");
     if (userId) {
-      this.commentService.getCommentByUserAndSubject(parseInt(userId), workoutId, "WORKOUT").subscribe((data) => {
-        this.commentExists = data.comment !== "";
-        this.comment = data ? data : {
-          comment: ""
-        };
-      });
-      this.ratingService.getRatingByUserAndSubject(parseInt(userId), workoutId, "WORKOUT").subscribe((data) => {
-        this.ratingExists = data.username !== "";
-        this.rating = data ? data : {
-          rating: 0
-        };
-        console.log(this.rating)
-      })
+      this.getRating(parseInt(userId), workoutId);
+      this.getComment(parseInt(userId), workoutId);
       this.displayCommentDialog = true;
     }
+  }
+
+
+  getRating(userId: number, workoutId: number) {
+    this.ratingService.getRatingByUserAndSubject(userId, workoutId, "WORKOUT").subscribe((data) => {
+      this.ratingExists = data.username !== "";
+      this.rating = data ? data : {
+        rating: 0
+      };
+      console.log(this.rating)
+    });
+  }
+
+  getComment(userId: number, workoutId: number) {
+    this.commentService.getCommentByUserAndSubject(userId, workoutId, "WORKOUT").subscribe((data) => {
+      this.commentExists = data.comment !== "";
+      this.comment = data ? data : {
+        comment: ""
+      };
+    });
   }
 }

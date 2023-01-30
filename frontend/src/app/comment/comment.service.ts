@@ -18,6 +18,10 @@ export class CommentService {
     return this.http.put<Comment>('/api/comment', comment);
   }
   
+  getSubjectComments(subjectId: number, commentType: string): Observable<Comment[]> {
+    return this.http.get<Comment[]>('/api/comment/' + subjectId + '/' + commentType);
+  }
+
   getCommentByUserAndSubject(userId: number, workoutId: number, commentType: string): Observable<Comment> {
     return this.http.get<Comment>('/api/comment/' + userId + '/' + workoutId + '/' + commentType);
   }

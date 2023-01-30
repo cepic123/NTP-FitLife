@@ -13,6 +13,17 @@ type StorageInterface interface {
 	CreateComment(*Comment) error
 	UpdateComment(*Comment) error
 	GetCommentBySubjectAndUser(int, int, string) (*Comment, error)
+	GetCommentsBySubject(int, string) (*[]Comment, error)
+}
+
+func (s *Storage) GetCommentsBySubject(subjectId int, commentType string) (*[]Comment, error) {
+	var comments []Comment
+	result := s.db.Where(&Comment{SubjectID: subjectId, CommentType: commentType}).Find(&comments)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &comments, nil
 }
 
 func (s *Storage) GetCommentBySubjectAndUser(userId, subjectId int, commentType string) (*Comment, error) {

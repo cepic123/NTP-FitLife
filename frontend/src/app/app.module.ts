@@ -23,6 +23,8 @@ import { LogoutComponent } from './logout/logout.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { AllWorkoutsComponent } from './all-workouts/all-workouts.component';
 import { RatingModule } from 'primeng/rating';
+import { UsersComponent } from './users/users.component';
+import { CoachRequestsComponent } from './coach-requests/coach-requests.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { RatingModule } from 'primeng/rating';
     ExerciseComponent,
     UserWorkoutsComponent,
     LogoutComponent,
-    AllWorkoutsComponent
+    AllWorkoutsComponent,
+    UsersComponent,
+    CoachRequestsComponent
   ],
   imports: [
     BrowserModule,

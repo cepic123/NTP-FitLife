@@ -13,6 +13,7 @@ type StorageInterface interface {
 	CreateRating(*Rating) error
 	UpdateRating(*Rating) error
 	GetRatingBySubjectAndUser(int, int, string) (*Rating, error)
+	GetSubjectRating(int, string) (int, error)
 }
 
 func (s *Storage) GetRatingBySubjectAndUser(userId, subjectId int, ratingType string) (*Rating, error) {
@@ -23,6 +24,22 @@ func (s *Storage) GetRatingBySubjectAndUser(userId, subjectId int, ratingType st
 		return nil, result.Error
 	}
 	return &rating, nil
+}
+
+func (s *Storage) GetSubjectRating(subjectId int, ratingType string) (int, error) {
+	var ratings []Rating
+	result := s.db.Where(&Rating{SubjectID: subjectId, RatingType: ratingType}).Find(&ratings)
+
+	if result.Error != nil {
+		return 0, result.Error
+	}
+
+	sum := 0
+	for i := 0; i < len(ratings); i++ {
+		sum += ratings[i].Rating
+	}
+
+	return sum / len(ratings), nil
 }
 
 func (s *Storage) CreateRating(rating *Rating) error {

@@ -14,6 +14,7 @@ func (s *APIServer) Run() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/comment", makeHTTPHandleFunc(s.handleComment))
+	router.HandleFunc("/comment/{workoutId}/{commentType}", makeHTTPHandleFunc(s.handleGetCommentsBySubject))
 	router.HandleFunc("/comment/{userId}/{workoutId}/{commentType}", makeHTTPHandleFunc(s.handleGetCommentByUserAndSubject))
 
 	fmt.Println("Server running on PORT: ", s.listenAddr)
@@ -28,6 +29,19 @@ func (s *APIServer) Run() {
 	handler := c.Handler(router)
 	fmt.Println("HEREY")
 	http.ListenAndServe(s.listenAddr, handler)
+}
+
+func (s *APIServer) handleGetCommentsBySubject(w http.ResponseWriter, r *http.Request) error {
+	workoutId, _ := strconv.Atoi(mux.Vars(r)["workoutId"])
+	commentType := mux.Vars(r)["commentType"]
+
+	comments, err := s.storage.GetCommentsBySubject(workoutId, commentType)
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, comments)
 }
 
 func (s *APIServer) handleGetCommentByUserAndSubject(w http.ResponseWriter, r *http.Request) error {
@@ -82,7 +96,6 @@ func (s *APIServer) handleUpdateComment(w http.ResponseWriter, r *http.Request) 
 		return WriteJSON(w, http.StatusOK, comment)
 	}
 
-	// updatedComment := NewComment(createCommentDTO.UserID, createCommentDTO.SubjectID, createCommentDTO.Username, createCommentDTO.Comment, createCommentDTO.CommentType)
 	if err := s.storage.UpdateComment(comment); err != nil {
 		return err
 	}

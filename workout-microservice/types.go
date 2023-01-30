@@ -38,6 +38,7 @@ type Workout struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Sets        []Set  `json:"sets"`
+	Rating      int    `json:"rating"`
 }
 
 func NewExercise(name, description, img string) *Exercise {

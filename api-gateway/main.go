@@ -32,23 +32,26 @@ func main() {
 	//USER MICROSERVICE
 	router.HandleFunc("/login", redirect("http://localhost:3001"))
 	router.HandleFunc("/user", redirect("http://localhost:3001"))
-	router.HandleFunc("/user", redirect("http://localhost:3001"))
+	router.HandleFunc("/user/deleated", redirect("http://localhost:3001"))
 	router.HandleFunc("/user/{id}", redirect("http://localhost:3001"))
+	router.HandleFunc("/user/delete/{id}", redirect("http://localhost:3001"))
 	router.HandleFunc("/user/{userId}/{workoutId}", redirect("http://localhost:3001"))
 	router.HandleFunc("/userWorkoutRefs/{id}", redirect("http://localhost:3001"))
+	router.HandleFunc("/user/restore/{id}", redirect("http://localhost:3001"))
 
 	//WORKOUT MICROSERVICE
 	router.HandleFunc("/exercise", redirect("http://localhost:3002"))
 	router.HandleFunc("/userWorkouts", redirect("http://localhost:3002"))
-
 	router.HandleFunc("/workout", redirect("http://localhost:3002"))
+	router.HandleFunc("/workout/rate/{id}/{rating}", redirect("http://localhost:3002"))
 	router.HandleFunc("/workout/{id}", redirect("http://localhost:3002"))
 
 	//COMMENT MICROSERVICE
 	router.HandleFunc("/comment", redirect("http://localhost:3003"))
 	router.HandleFunc("/comment/{userId}/{workoutId}/{commentType}", redirect("http://localhost:3003"))
+	router.HandleFunc("/comment/{workoutId}/{commentType}", redirect("http://localhost:3003"))
 
-	//COMMENT MICROSERVICE
+	//RATING MICROSERVICE
 	router.HandleFunc("/rating", redirect("http://localhost:3004"))
 	router.HandleFunc("/rating/{id}", redirect("http://localhost:3004"))
 	router.HandleFunc("/rating/{subjectId}", redirect("http://localhost:3004"))

@@ -5,6 +5,7 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Rating</th>
             <th></th>
             <th></th>
             <th></th>
@@ -14,8 +15,12 @@
         <tr>
             <td>{{workout.name}}</td>
             <td>{{workout.description}}</td>
+            <td>{{workout.rating}}</td>
             <td>
                 <button pButton type="button" label="Details" (click)="showDetailed(workout.id)"></button>
+            </td>
+            <td>
+                <button pButton type="button" label="View Comments" (click)="showComments(workout.id)"></button>
             </td>
             <td>
                 <button pButton type="button" label="Add to my workouts" (click)="addWorkoutToUser(workout.id)"></button>
@@ -36,6 +41,16 @@
                 <p>Exercise: {{rep.exercise?.name}}</p>
                 <p>Exercise: {{rep.exercise?.description}}</p>
             </div>
+            <br>
+        </div>
+    </div>
+  </p-dialog>
+
+  <p-dialog [(visible)]="displayComments">
+    <div class="card" style="margin: 10px;">
+        <div *ngFor="let comment of comments; index as i;" class="card">
+            <p>Comment by: {{comment.username}}</p>
+            <p>Rep {{comment.comment}}</p>
             <br>
         </div>
     </div>

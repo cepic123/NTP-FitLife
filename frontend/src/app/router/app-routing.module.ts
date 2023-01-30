@@ -23,6 +23,8 @@ import {
 import { AuthGuard } from './auth.guard';
 import { LogoutComponent } from '../logout/logout.component';
 import { AllWorkoutsComponent } from '../all-workouts/all-workouts.component';
+import { UsersComponent } from '../users/users.component';
+import { CoachRequestsComponent } from '../coach-requests/coach-requests.component';
 
 const routes: Routes = [
   {
@@ -65,6 +67,14 @@ const routes: Routes = [
     path: 'all-workouts',
     component: AllWorkoutsComponent
   },
+  {
+    path: 'all-users',
+    component: UsersComponent
+  },
+  {
+    path: 'coach-requests',
+    component: CoachRequestsComponent
+  }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

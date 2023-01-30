@@ -49,12 +49,14 @@
         <h1>Leave a Comment</h1>
         <textarea pInputTextarea [(ngModel)]="comment.comment"></textarea>
         <br>
+        <br>
         <button *ngIf="!commentExists" pButton [disabled]="validateComment()" type="button" label="Save comment" (click)="createComment('WORKOUT')"></button>
         <button *ngIf="commentExists" pButton [disabled]="validateComment()" type="button" label="Update comment" (click)="updateComment()"></button>
     </div>
     <div>
         <h1>Leave Rating</h1>
         <p-rating [cancel]="false" [(ngModel)]="rating.rating"></p-rating>
+        <br>
         <button *ngIf="!ratingExists" pButton type="button" label="Save rating" (click)="createRating('WORKOUT')"></button>
         <button *ngIf="ratingExists" pButton type="button" label="Update rating" (click)="updateRating()"></button>
     </div>

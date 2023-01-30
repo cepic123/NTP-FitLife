@@ -28,13 +28,16 @@ func (s *APIServer) Run() {
 
 	router.HandleFunc("/login", makeHTTPHandleFunc(s.handleLoginUser))
 	router.HandleFunc("/user", makeHTTPHandleFunc(s.handleUser))
+	router.HandleFunc("/user/deleated", makeHTTPHandleFunc(s.handleGetDeleatedUsers))
+
 	router.HandleFunc("/user/{id}", makeHTTPHandleFunc(s.handleUser))
+	router.HandleFunc("/user/delete/{id}", makeHTTPHandleFunc(s.handleDeleteUserPerm))
 	router.HandleFunc("/user/validate/{username}/{password}", makeHTTPHandleFunc(s.handleValidateUser))
 
 	router.HandleFunc("/userWorkoutRefs/{id}", makeHTTPHandleFunc(s.handleGetUserWorkouts))
 
-	//ADD WORKOUT TO USER
-	// router.HandleFunc("/user/{userId}/{workoutId}", makeHTTPHandleFunc(s.handleAddWorkoutToUser))
+	router.HandleFunc("/user/restore/{id}", makeHTTPHandleFunc(s.handleRestoreUser))
+
 	router.HandleFunc("/user/{userId}/{workoutId}", makeHTTPHandleFunc(s.handleWorkoutToUser))
 
 	fmt.Println("Server running on PORT: ", s.listenAddr)
@@ -52,9 +55,6 @@ func (s *APIServer) Run() {
 }
 
 func (s *APIServer) handleWorkoutToUser(w http.ResponseWriter, r *http.Request) error {
-	if r.Method == "GET" {
-		return s.handleGetAllUsers(w, r)
-	}
 	if r.Method == "POST" {
 		return s.handleAddWorkoutToUser(w, r)
 	}
@@ -170,6 +170,32 @@ func (s *APIServer) handleDeleteUser(w http.ResponseWriter, r *http.Request) err
 	return err
 }
 
+func (s *APIServer) handleDeleteUserPerm(w http.ResponseWriter, r *http.Request) error {
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	err := s.storage.PermanentlyDeleteUser(id)
+
+	return err
+}
+
+func (s *APIServer) handleRestoreUser(w http.ResponseWriter, r *http.Request) error {
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	err := s.storage.RestoreUser(id)
+
+	return err
+}
+
+func (s *APIServer) handleGetDeleatedUsers(w http.ResponseWriter, r *http.Request) error {
+	result, err := s.storage.GetAllDeleatedUsers()
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, result)
+}
+
 func (s *APIServer) handleGetAllUsers(w http.ResponseWriter, r *http.Request) error {
 	result, err := s.storage.GetAllUsers()
 
@@ -182,8 +208,6 @@ func (s *APIServer) handleGetAllUsers(w http.ResponseWriter, r *http.Request) er
 
 func (s *APIServer) handleGetUser(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
-
-	// account := NewUser("ACA", "PASSWORD")
 
 	return WriteJSON(w, http.StatusOK, vars)
 }

@@ -1,0 +1,28 @@
+<h1>Coach Requests!</h1>
+
+<div class="card" style="margin: 10px;">
+    <p-table [value]="users">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr *ngIf="user.DeletedAt === user.CreatedAt">
+          <td>{{user.username}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.role}}</td>
+          <td>
+            <button pButton type="button" label="Activate Account" (click)="restoreUser(user.id)"></button>
+        </td>
+        <td>
+            <button pButton type="button" label="Delete Request" (click)="permanentlyDeleteUser(user.id)"></button>
+        </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>

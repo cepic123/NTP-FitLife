@@ -1,0 +1,25 @@
+<h1>All Users</h1>
+
+<div class="card" style="margin: 10px;">
+    <p-table [value]="users">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr *ngIf="user.DeletedAt != user.CreatedAt">
+          <td>{{user.username}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.role}}</td>
+          <td>
+            <button *ngIf="!user.DeletedAt" pButton type="button" label="Delete User" (click)="deleteUser(user.id)"></button>
+            <button *ngIf="user.DeletedAt" pButton type="button" label="Restore User" (click)="restoreUser(user.id)"></button>
+        </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>

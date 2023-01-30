@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RowToggler } from 'primeng/table';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
+import { User } from 'src/app/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +17,21 @@ export class UserService {
       email: email,
       role: role,
     });
+  }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>('/api/user');
+  }
+
+  deleteUser(userId: number): Observable<Object> {
+    return this.http.delete<User[]>('/api/user/' + userId);
+  }
+
+  permanentlyDeleteUser(userId: number): Observable<Object> {
+    return this.http.delete<Object>('/api/user/delete/' + userId);
+  }
+
+  restoreUser(userId: number): Observable<Object> {
+    return this.http.put<Object>('/api/user/restore/' + userId, {});
   }
 }

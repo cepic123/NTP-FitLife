@@ -17,6 +17,7 @@ type StorageInterface interface {
 	GetWorkout(int) (*Workout, error)
 	GetUserWorkouts([]int) (*[]Workout, error)
 	CreateWorkout(*Workout) error
+	UpdateRating(*Workout) error
 }
 
 func (s *Storage) CreateExercise(exercise *Exercise) error {
@@ -35,10 +36,17 @@ func (s *Storage) CreateWorkout(workout *Workout) error {
 	return nil
 }
 
+func (s *Storage) UpdateRating(workout *Workout) error {
+	fmt.Println("UPDATING WORKOUT")
+	if result := s.db.Save(workout); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
 func (s *Storage) GetUserWorkouts(workoutIds []int) (*[]Workout, error) {
 	var workouts []Workout
 
-	// result := s.db.Preload("Sets.Reps.Exercise").Preload(clause.Associations).Find(&workouts, workoutIds)
 	result := s.db.Find(&workouts, workoutIds)
 
 	if result.Error != nil {
@@ -90,7 +98,7 @@ func NewStorage() (*Storage, error) {
 	if err != nil {
 		return nil, err
 	}
-	//TODO: PUT THIS SOMHERE ELSE
+
 	db.AutoMigrate(&Workout{}, &Exercise{}, &Set{}, &Rep{})
 
 	return &Storage{
