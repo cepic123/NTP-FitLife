@@ -186,6 +186,7 @@ func redirect(redirectAddr string) http.HandlerFunc {
 		if r.Method == http.MethodPost {
 			data, _ := ioutil.ReadAll(r.Body)
 			req, _ = http.NewRequest(http.MethodPost, redirectAddr+r.URL.String(), bytes.NewBuffer(data))
+			req.Header.Set("Content-Type", "application/json; charset=utf-8")
 		} else if r.Method == http.MethodPut {
 			data, _ := ioutil.ReadAll(r.Body)
 			req, _ = http.NewRequest(http.MethodPut, redirectAddr+r.URL.String(), bytes.NewBuffer(data))
