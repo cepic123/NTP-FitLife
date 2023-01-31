@@ -65,6 +65,12 @@ func main() {
 	router.HandleFunc("/complaint/user/{id}", redirect("http://localhost:4001"))
 	router.HandleFunc("/complaint/subject/{id}", redirect("http://localhost:4001"))
 
+	//BLOCK SERVICE
+	router.HandleFunc("/block", redirect("http://localhost:4002"))
+	router.HandleFunc("/block/{id}", redirect("http://localhost:4002"))
+	router.HandleFunc("/block/user/{id}", redirect("http://localhost:4002"))
+	router.HandleFunc("/block/subject/{id}", redirect("http://localhost:4002"))
+
 	http.ListenAndServe(":3000", router)
 	// http.ListenAndServe(":3000", Authorizer(authEnforcer)(router))
 }

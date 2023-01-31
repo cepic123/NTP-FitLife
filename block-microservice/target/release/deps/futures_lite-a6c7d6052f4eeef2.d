@@ -1,0 +1,11 @@
+C:\Users\aleks\Desktop\NTP\NTP-FitLife\complaint-microservice\target\release\deps\futures_lite-a6c7d6052f4eeef2.rmeta: C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\lib.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\future.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\prelude.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\stream.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\io.rs
+
+C:\Users\aleks\Desktop\NTP\NTP-FitLife\complaint-microservice\target\release\deps\libfutures_lite-a6c7d6052f4eeef2.rlib: C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\lib.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\future.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\prelude.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\stream.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\io.rs
+
+C:\Users\aleks\Desktop\NTP\NTP-FitLife\complaint-microservice\target\release\deps\futures_lite-a6c7d6052f4eeef2.d: C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\lib.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\future.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\prelude.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\stream.rs C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\io.rs
+
+C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\lib.rs:
+C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\future.rs:
+C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\prelude.rs:
+C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\stream.rs:
+C:\Users\aleks\.cargo\registry\src\github.com-1ecc6299db9ec823\futures-lite-1.12.0\src\io.rs:

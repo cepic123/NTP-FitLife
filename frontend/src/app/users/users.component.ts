@@ -11,6 +11,7 @@ import { UserService } from '../user/services/user.service';
 })
 export class UsersComponent implements OnInit {
 
+  role?: string = "";
   users: User[] = [];
   complaint: Complaint = {
     complaint_text: "",
@@ -31,6 +32,8 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    var role = localStorage.getItem("role");
+    this.role = role ? role : undefined;
     this.getAllUsers()
   }
 

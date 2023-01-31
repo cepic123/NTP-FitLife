@@ -12,18 +12,20 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-user>
-        <tr *ngIf="user.DeletedAt != user.CreatedAt">
-          <td>{{user.username}}</td>
-          <td>{{user.email}}</td>
-          <td>{{user.role}}</td>
+        <div *ngIf="role === 'admin' || user?.role === 'coach'">
+          <tr *ngIf="user.DeletedAt != user.CreatedAt">
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.role}}</td>
+            <td>
+              <button *ngIf="!user.DeletedAt" pButton type="button" label="Delete User" (click)="deleteUser(user.id)"></button>
+              <button *ngIf="user.DeletedAt" pButton type="button" label="Restore User" (click)="restoreUser(user.id)"></button>
+          </td>
           <td>
-            <button *ngIf="!user.DeletedAt" pButton type="button" label="Delete User" (click)="deleteUser(user.id)"></button>
-            <button *ngIf="user.DeletedAt" pButton type="button" label="Restore User" (click)="restoreUser(user.id)"></button>
-        </td>
-        <td>
-          <button pButton type="button" label="Show Complaints" (click)="getComplaints(user.id)"></button>
-        </td>
-        </tr>
+            <button pButton type="button" label="Show Complaints" (click)="getComplaints(user.id)"></button>
+          </td>
+          </tr>
+        </div>
       </ng-template>
     </p-table>
   </div>

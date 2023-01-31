@@ -1,0 +1,3 @@
+cargo:rerun-if-changed=build/main.rs
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=C:\Users\aleks\Desktop\NTP\NTP-FitLife\complaint-microservice\target\release\build\typenum-756bca806ba4bfdb\out\consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=C:\Users\aleks\Desktop\NTP\NTP-FitLife\complaint-microservice\target\release\build\typenum-756bca806ba4bfdb\out\op.rs
