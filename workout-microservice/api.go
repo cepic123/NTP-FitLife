@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 type APIServer struct {
@@ -25,6 +26,7 @@ func (s *APIServer) Run() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/exercise", makeHTTPHandleFunc(s.handleExercise))
+	router.HandleFunc("/exercise/{coachId}", makeHTTPHandleFunc(s.handleExercise))
 
 	router.HandleFunc("/workout", makeHTTPHandleFunc(s.handleWorkout))
 	router.HandleFunc("/workout/{id}", makeHTTPHandleFunc(s.handleWorkout))
@@ -39,7 +41,16 @@ func (s *APIServer) Run() {
 
 	fmt.Println("Server running on PORT: ", s.listenAddr)
 
-	http.ListenAndServe(s.listenAddr, router)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"localhost:3000"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "OPTIONS", "POST", "DELETE", "PUT"},
+		AllowedHeaders:   []string{"*"},
+	})
+
+	handler := c.Handler(router)
+	fmt.Println("HEREY")
+	http.ListenAndServe(s.listenAddr, handler)
 }
 
 func (s *APIServer) handleCalendarEntries(w http.ResponseWriter, r *http.Request) error {
@@ -148,6 +159,7 @@ func (s *APIServer) handleGetUserWorkouts(w http.ResponseWriter, r *http.Request
 }
 
 func (s *APIServer) handleUpdateWorkoutRating(w http.ResponseWriter, r *http.Request) error {
+	fmt.Println("UPDATE RATING")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 	rating, _ := strconv.Atoi(mux.Vars(r)["rating"])
 
@@ -214,7 +226,7 @@ func (s *APIServer) handleCreateExercise(w http.ResponseWriter, r *http.Request)
 		return err
 	}
 
-	exercise := NewExercise(createExerciseDTO.Name, createExerciseDTO.Description, createExerciseDTO.Img)
+	exercise := NewExercise(createExerciseDTO.Name, createExerciseDTO.Description, createExerciseDTO.Img, createExerciseDTO.CoachId)
 	if err := s.storage.CreateExercise(exercise); err != nil {
 		return err
 	}
@@ -223,7 +235,9 @@ func (s *APIServer) handleCreateExercise(w http.ResponseWriter, r *http.Request)
 }
 
 func (s *APIServer) handleGetAllExercises(w http.ResponseWriter, r *http.Request) error {
-	result, err := s.storage.GetAllExercises()
+	id, _ := strconv.Atoi(mux.Vars(r)["coachId"])
+
+	result, err := s.storage.GetAllExercises(id)
 
 	if err != nil {
 		return err

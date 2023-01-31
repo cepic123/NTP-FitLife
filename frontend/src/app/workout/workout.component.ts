@@ -13,6 +13,7 @@ import { WorkoutService } from './services/workout.service';
 })
 export class WorkoutComponent implements OnInit {
 
+  userId?: number;
   setNum: number = 0;
   newRepNoReps: number = 0;
   breakLngth: number = 0;
@@ -38,11 +39,13 @@ export class WorkoutComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    var userId = localStorage.getItem('userId')
+    this.userId = userId ? parseInt(userId) : undefined
     this.getAllExercises()
   }
 
   getAllExercises() {
-    this.exerciseService.getAllExercises().subscribe((data) => {
+    this.exerciseService.getAllExercises(this.userId).subscribe((data) => {
       this.exercises = data;
     });
   }

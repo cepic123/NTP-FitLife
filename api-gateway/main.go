@@ -23,56 +23,55 @@ func main() {
 
 	router := mux.NewRouter()
 
-	// authEnforcer, err := casbin.NewEnforcerSafe("./auth_model.conf", "./policy.csv")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	authEnforcer, err := casbin.NewEnforcerSafe("./auth_model.conf", "./policy.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// router.Use(authMiddleware)
 	//USER MICROSERVICE
 	router.HandleFunc("/login", redirect("http://localhost:3001"))
 	router.HandleFunc("/user", redirect("http://localhost:3001"))
-	router.HandleFunc("/user/deleated", redirect("http://localhost:3001"))
-	router.HandleFunc("/user/{id}", redirect("http://localhost:3001"))
-	router.HandleFunc("/user/delete/{id}", redirect("http://localhost:3001"))
-	router.HandleFunc("/user/{userId}/{workoutId}", redirect("http://localhost:3001"))
-	router.HandleFunc("/userWorkoutRefs/{id}", redirect("http://localhost:3001"))
-	router.HandleFunc("/user/restore/{id}", redirect("http://localhost:3001"))
+	router.HandleFunc("/user/deleated", authMiddleware(redirect("http://localhost:3001")))
+	router.HandleFunc("/user/{id}", authMiddleware(redirect("http://localhost:3001")))
+	router.HandleFunc("/user/delete/{id}", authMiddleware(redirect("http://localhost:3001")))
+	router.HandleFunc("/user/{userId}/{workoutId}", authMiddleware(redirect("http://localhost:3001")))
+	router.HandleFunc("/userWorkoutRefs/{id}", authMiddleware(redirect("http://localhost:3001")))
+	router.HandleFunc("/user/restore/{id}", authMiddleware(redirect("http://localhost:3001")))
 
 	//WORKOUT MICROSERVICE
-	router.HandleFunc("/exercise", redirect("http://localhost:3002"))
-	router.HandleFunc("/userWorkouts", redirect("http://localhost:3002"))
-	router.HandleFunc("/workout", redirect("http://localhost:3002"))
+	router.HandleFunc("/exercise", authMiddleware(redirect("http://localhost:3002")))
+	router.HandleFunc("/userWorkouts", authMiddleware(redirect("http://localhost:3002")))
+	router.HandleFunc("/workout", authMiddleware(redirect("http://localhost:3002")))
 	router.HandleFunc("/workout/rate/{id}/{rating}", redirect("http://localhost:3002"))
-	router.HandleFunc("/workout/{id}", redirect("http://localhost:3002"))
-	router.HandleFunc("/workout/calendar/{userId}/{workoutId}/{date}/{workoutName}", redirect("http://localhost:3002"))
-	router.HandleFunc("/workout/calendar/{id}", redirect("http://localhost:3002"))
+	router.HandleFunc("/workout/{id}", authMiddleware(redirect("http://localhost:3002")))
+	router.HandleFunc("/workout/calendar/{userId}/{workoutId}/{date}/{workoutName}", authMiddleware(redirect("http://localhost:3002")))
+	router.HandleFunc("/workout/calendar/{id}", authMiddleware(redirect("http://localhost:3002")))
+	router.HandleFunc("/exercise/{coachId}", authMiddleware(redirect("http://localhost:3002")))
 
 	//COMMENT MICROSERVICE
-	router.HandleFunc("/comment", redirect("http://localhost:3003"))
-	router.HandleFunc("/comment/{userId}/{workoutId}/{commentType}", redirect("http://localhost:3003"))
-	router.HandleFunc("/comment/{workoutId}/{commentType}", redirect("http://localhost:3003"))
+	router.HandleFunc("/comment", authMiddleware(redirect("http://localhost:3003")))
+	router.HandleFunc("/comment/{userId}/{workoutId}/{commentType}", authMiddleware(redirect("http://localhost:3003")))
+	router.HandleFunc("/comment/{workoutId}/{commentType}", authMiddleware(redirect("http://localhost:3003")))
 
 	//RATING MICROSERVICE
-	router.HandleFunc("/rating", redirect("http://localhost:3004"))
-	router.HandleFunc("/rating/{id}", redirect("http://localhost:3004"))
-	router.HandleFunc("/rating/{subjectId}", redirect("http://localhost:3004"))
-	router.HandleFunc("/rating/{userId}/{workoutId}/{ratingType}", redirect("http://localhost:3004"))
+	router.HandleFunc("/rating", authMiddleware(redirect("http://localhost:3004")))
+	router.HandleFunc("/rating/{id}", authMiddleware(redirect("http://localhost:3004")))
+	router.HandleFunc("/rating/{subjectId}", authMiddleware(redirect("http://localhost:3004")))
+	router.HandleFunc("/rating/{userId}/{workoutId}/{ratingType}", authMiddleware(redirect("http://localhost:3004")))
 
 	//COMPLAINT SERVICE
-	router.HandleFunc("/complaint", redirect("http://localhost:4001"))
-	router.HandleFunc("/complaint/{id}", redirect("http://localhost:4001"))
-	router.HandleFunc("/complaint/user/{id}", redirect("http://localhost:4001"))
-	router.HandleFunc("/complaint/subject/{id}", redirect("http://localhost:4001"))
+	router.HandleFunc("/complaint", authMiddleware(redirect("http://localhost:4001")))
+	router.HandleFunc("/complaint/{id}", authMiddleware(redirect("http://localhost:4001")))
+	router.HandleFunc("/complaint/user/{id}", authMiddleware(redirect("http://localhost:4001")))
+	router.HandleFunc("/complaint/subject/{id}", authMiddleware(redirect("http://localhost:4001")))
 
 	//BLOCK SERVICE
-	router.HandleFunc("/block", redirect("http://localhost:4002"))
-	router.HandleFunc("/block/{id}", redirect("http://localhost:4002"))
-	router.HandleFunc("/block/user/{id}", redirect("http://localhost:4002"))
-	router.HandleFunc("/block/subject/{id}", redirect("http://localhost:4002"))
+	router.HandleFunc("/block", authMiddleware(redirect("http://localhost:4002")))
+	router.HandleFunc("/block/{id}", authMiddleware(redirect("http://localhost:4002")))
+	router.HandleFunc("/block/user/{id}", authMiddleware(redirect("http://localhost:4002")))
+	router.HandleFunc("/block/subject/{id}", authMiddleware(redirect("http://localhost:4002")))
 
-	http.ListenAndServe(":3000", router)
-	// http.ListenAndServe(":3000", Authorizer(authEnforcer)(router))
+	http.ListenAndServe(":3000", Authorizer(authEnforcer)(router))
 }
 
 func authMiddleware(h http.HandlerFunc) http.HandlerFunc {
@@ -89,7 +88,6 @@ func authMiddleware(h http.HandlerFunc) http.HandlerFunc {
 		}
 
 		claims := token.Claims.(jwt.MapClaims)
-		fmt.Println(claims)
 
 		username := claims["username"]
 		password := claims["password"]
@@ -100,7 +98,6 @@ func authMiddleware(h http.HandlerFunc) http.HandlerFunc {
 			WriteJSON(w, http.StatusForbidden, ApiError{Error: "invalid token"})
 			return
 		}
-
 		h.ServeHTTP(w, r)
 	})
 }
@@ -130,6 +127,10 @@ func Authorizer(e *casbin.Enforcer) func(next http.Handler) http.Handler {
 
 			// casbin rule enforcing
 			res, err := e.EnforceSafe(role, r.URL.Path, r.Method)
+			fmt.Println(role)
+			fmt.Println(r.URL.Path)
+			fmt.Println(r.Method)
+
 			if err != nil {
 				WriteJSON(w, http.StatusForbidden, ApiError{Error: "Authorization error"})
 				return

@@ -75,7 +75,7 @@ export class UserWorkoutsComponent implements OnInit {
     this.comment.subjectID = this.selectedWorkout;
     this.comment.commentType = commentType;
     this.commentService.createComment(this.comment).subscribe((data) => {
-      console.log(data);
+      this.displayCommentDialog = false;
     })
     this.getComment(this.comment.userID, this.comment.subjectID);
   }
@@ -88,20 +88,20 @@ export class UserWorkoutsComponent implements OnInit {
     this.rating.subjectID = this.selectedWorkout;
     this.rating.ratingType = ratingType;
     this.ratingService.createRating(this.rating).subscribe((data) => {
-      console.log(data);
+      this.displayCommentDialog = false;
     })
     this.getRating(this.rating.userID, this.rating.subjectID);
   }
 
   updateComment() {
     this.commentService.updateComment(this.comment).subscribe((data) => {
-      console.log(data);
+      this.displayCommentDialog = false;
     })
   }
 
   updateRating() {
     this.ratingService.updateRating(this.rating).subscribe((data) => {
-      console.log(data);
+      this.displayCommentDialog = false;
     })
   }
 

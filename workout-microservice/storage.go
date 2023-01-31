@@ -12,7 +12,7 @@ import (
 
 type StorageInterface interface {
 	CreateExercise(*Exercise) error
-	GetAllExercises() (*[]Exercise, error)
+	GetAllExercises(int) (*[]Exercise, error)
 
 	GetWorkout(int) (*Workout, error)
 	GetUserWorkouts([]int) (*[]Workout, error)
@@ -121,10 +121,11 @@ func (s *Storage) GetWorkout(workoutId int) (*Workout, error) {
 	return &workout, nil
 }
 
-func (s *Storage) GetAllExercises() (*[]Exercise, error) {
+func (s *Storage) GetAllExercises(id int) (*[]Exercise, error) {
 	var exercises []Exercise
 
-	result := s.db.Find(&exercises)
+	result := s.db.Where(&Exercise{CoachId: id}).Find(&exercises)
+
 	if result.Error != nil {
 		return nil, result.Error
 	}

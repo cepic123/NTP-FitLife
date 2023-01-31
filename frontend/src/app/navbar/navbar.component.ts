@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { LoginService } from '../login/services/login.service';
 import { LogoutService } from '../logout/services/logout.service';
@@ -17,78 +18,32 @@ export class NavbarComponent implements OnInit {
       routerLink: '/login',
     },
     {
-      label: 'User',
+      label: 'Register',
       icon: 'pi pi-fw pi-sign-in',
       routerLink: '/user',
-    },
-    {
-      label: 'Workout',
-      icon: 'pi pi-fw pi-sign-in',
-      routerLink: '/workout',
-    },
-    {
-      label: 'My Workouts',
-      icon: 'pi pi-fw pi-sign-in',
-      routerLink: '/user-workouts',
-    },
-    {
-      label: 'All Workouts',
-      icon: 'pi pi-fw pi-sign-in',
-      routerLink: '/all-workouts',
-    },
-    {
-      label: 'Exercise',
-      icon: 'pi pi-fw pi-sign-in',
-      routerLink: '/exercise',
-    },
-    {
-      label: 'View Users',
-      icon: 'pi pi-fw pi-sign-in',
-      routerLink: '/all-users',
-    },
-    {
-      label: 'Coach Requests',
-      icon: 'pi pi-fw pi-sign-in',
-      routerLink: '/coach-requests',
-    },
-    {
-      label: 'Calendar',
-      icon: 'pi pi-fw pi-sign-in',
-      routerLink: '/calendar',
-    },
-    {
-      label: 'Logout',
-      icon: 'pi pi-fw pi-sign-in',
-      routerLink: '/logout',
     }
   ];
-  // items: MenuItem[] = [
-  //   {
-  //     label: 'Login',
-  //     icon: 'pi pi-fw pi-sign-in',
-  //     routerLink: '/login',
-  //   },
-  //   {
-  //     label: 'Register',
-  //     icon: 'pi pi-fw pi-sign-in',
-  //     routerLink: '/user',
-  //   }
-  // ];
 
   constructor(
     private loginService: LoginService,
-    private logoutService: LogoutService
+    private logoutService: LogoutService,
+    private router: Router
   ) {
-    // this.loginService.loginEvent.subscribe(() => {
-    //   this.setNavbarItems();
-    // });
-    // this.logoutService.logoutEvent.subscribe(() => {
-    //   this.setLogoutItems();
-    // });
+    this.loginService.loginEvent.subscribe(() => {
+      this.setNavbarItems();
+    });
+    this.logoutService.logoutEvent.subscribe(() => {
+      this.setLogoutItems();
+    });
   }
-
+  
   setNavbarItems = () => {
     var role = localStorage.getItem('role');
+    if (role === 'admin') {
+      this.router.navigate(['coach-requests']);
+    } else {
+      this.router.navigate(['calendar']);
+    }
     if (role === null || role === '') {
       this.setLogoutItems();
     } else {
@@ -97,25 +52,44 @@ export class NavbarComponent implements OnInit {
           label: 'Workout',
           icon: 'pi pi-fw pi-sign-in',
           routerLink: '/workout',
-          visible: role === 'coach',
+          visible: role === 'coach'
         },
         {
           label: 'My Workouts',
           icon: 'pi pi-fw pi-sign-in',
           routerLink: '/user-workouts',
-          visible: role === 'user',
+        },
+        {
+          label: 'All Workouts',
+          icon: 'pi pi-fw pi-sign-in',
+          routerLink: '/all-workouts',
         },
         {
           label: 'Exercise',
           icon: 'pi pi-fw pi-sign-in',
           routerLink: '/exercise',
-          visible: role === 'coach',
+          visible: role === 'coach'
+        },
+        {
+          label: 'View Users',
+          icon: 'pi pi-fw pi-sign-in',
+          routerLink: '/all-users',
+        },
+        {
+          label: 'Coach Requests',
+          icon: 'pi pi-fw pi-sign-in',
+          routerLink: '/coach-requests',
+          visible: role === 'admin'
+        },
+        {
+          label: 'Calendar',
+          icon: 'pi pi-fw pi-sign-in',
+          routerLink: '/calendar',
         },
         {
           label: 'Logout',
           icon: 'pi pi-fw pi-sign-in',
           routerLink: '/logout',
-          visible: role === 'coach' || role === 'user',
         }
       ]
     }
@@ -137,7 +111,7 @@ export class NavbarComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    // this.setNavbarItems();
+    this.setNavbarItems();
   }
 
 }

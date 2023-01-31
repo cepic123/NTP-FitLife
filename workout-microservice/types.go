@@ -18,6 +18,7 @@ type Exercise struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Img         string `json:"img"`
+	CoachId     int    `json:"coachId"`
 }
 
 type Rep struct {
@@ -49,11 +50,12 @@ type Workout struct {
 	Rating      int    `json:"rating"`
 }
 
-func NewExercise(name, description, img string) *Exercise {
+func NewExercise(name, description, img string, coachId int) *Exercise {
 	return &Exercise{
 		Name:        name,
 		Description: description,
 		Img:         img,
+		CoachId:     coachId,
 	}
 }
 

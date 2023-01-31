@@ -35,7 +35,7 @@
         <h1>{{workout.name}}</h1>
         <div *ngFor="let set of workout.sets; index as i;" class="card" style="display: inline-table; border: 1px solid; margin: 10px;">
             <div>
-              <h3>Break length between exercises: {{set.breakLngth}}</h3>
+              <h3>Break length between exercises: {{set.breakLngth}}s</h3>
               <h3>Number of sets: {{set.noSets}}</h3>
             </div>
             <div>
@@ -56,7 +56,7 @@
     <div class="card" style="margin: 10px;">
         <div *ngFor="let comment of comments; index as i;" class="card">
             <p>Comment by: {{comment.username}}</p>
-            <p>Rep {{comment.comment}}</p>
+            <p>Comment: {{comment.comment}}</p>
             <br>
         </div>
     </div>

@@ -7,25 +7,28 @@
           <th>Username</th>
           <th>Email</th>
           <th>Role</th>
-          <th></th>
+          <th *ngIf="role === 'admin' || role === 'user'"></th>
+          <th *ngIf="role !== 'admin'"></th>
           <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-user>
-        <div *ngIf="role === 'admin' || user?.role === 'coach'">
-          <tr *ngIf="user.DeletedAt != user.CreatedAt">
+          <tr *ngIf="user.DeletedAt != user.CreatedAt && role === 'admin' || user?.role === 'coach'">
             <td>{{user.username}}</td>
             <td>{{user.email}}</td>
             <td>{{user.role}}</td>
+            <td *ngIf="role === 'admin' || role === 'user'">
+              <button *ngIf="!user.DeletedAt && role === 'admin'" pButton type="button" label="Delete User" (click)="deleteUser(user.id)"></button>
+              <button *ngIf="user.DeletedAt && role === 'admin'" pButton type="button" label="Restore User" (click)="restoreUser(user.id)"></button>
+              <button *ngIf="!user.DeletedAt && role === 'user'" pButton type="button" label="Leave Complaint" (click)="openCommentInputDialog(user.id, user.username)"></button>
+            </td>
             <td>
-              <button *ngIf="!user.DeletedAt" pButton type="button" label="Delete User" (click)="deleteUser(user.id)"></button>
-              <button *ngIf="user.DeletedAt" pButton type="button" label="Restore User" (click)="restoreUser(user.id)"></button>
-          </td>
-          <td>
-            <button pButton type="button" label="Show Complaints" (click)="getComplaints(user.id)"></button>
-          </td>
+              <button *ngIf="!user.DeletedAt && role !== 'admin' " pButton type="button" label="Block User" (click)="blockUser(user.id, user.username)"></button>
+            </td>
+            <td>
+              <button pButton type="button" label="Show Complaints" (click)="getComplaints(user.id)"></button>
+            </td>
           </tr>
-        </div>
       </ng-template>
     </p-table>
   </div>
@@ -37,5 +40,16 @@
             <p>Rep {{complaint.complaint_text}}</p>
             <br>
         </div>
+        <h1 *ngIf="complaints.length === 0">No complaints for user</h1>
     </div>
+  </p-dialog>
+
+  <p-dialog [(visible)]="displayComplaintInput">
+    <h5>Comment text</h5>
+    <div class="p-field">
+      <textarea pInputTextarea [(ngModel)]="complaint.complaint_text"></textarea>
+    </div>
+    <br>
+    <button [disabled]="validateComplaint()" pButton type="button" label="Save Complaints" (click)="saveComplaint()"></button>
+    <br>
   </p-dialog>

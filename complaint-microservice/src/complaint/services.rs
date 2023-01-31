@@ -91,7 +91,6 @@ async fn get_subject_complaints(state: Data<AppState>, path: Path<i32>) -> impl 
 
 #[post("/complaint")]
 async fn create_complaint(state: Data<AppState>, body: Json<CreateComplaintDTO>) -> impl Responder {
-    println!("hello there!");
     match sqlx::query_as::<_, Complaint>(
         "INSERT INTO complaints (user_id, user_name, subject_name, complaint_subject_id, complaint_text) VALUES ($1, $2, $3, $4, $5) RETURNING id, user_id, user_name, subject_name, complaint_subject_id, complaint_text"
     )

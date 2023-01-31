@@ -26,6 +26,9 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('username', data.username)
       localStorage.setItem('isLoggedIn', 'true')
       this.LoginService.emitLoginEvent();
+    },
+    (err) => {
+      alert("Wrong Credentials")
     })
   }
 

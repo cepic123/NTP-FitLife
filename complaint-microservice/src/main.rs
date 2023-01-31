@@ -2,6 +2,7 @@ use actix_web::{web::Data, get, web, App, HttpServer};
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres, FromRow}; 
+use actix_cors::Cors;
 
 mod complaint;
 use complaint::services;
@@ -35,7 +36,11 @@ async fn main() -> std::io::Result<()> {
         .expect("Error building a connection pool");
 
     HttpServer::new(move || {
+        let cors = Cors::default()
+            .allowed_origin("localhost:3000");
+
         App::new()
+            .wrap(cors)
             .app_data(Data::new(AppState { db: pool.clone()}))
             .service(index)
             .configure(services::config)

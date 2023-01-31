@@ -39,46 +39,66 @@ const routes: Routes = [
   {
     path: 'logout',
     component: LogoutComponent,
-    // canActivate: [AuthGuard],
-    // data: {
-    //   expectedRoles: ['user','coach','admin'],
-    // },
+    canActivate: [AuthGuard],
+    data: {
+      expectedRoles: ['user','coach','admin'],
+    },
   },
   {
     path: 'workout',
     component: WorkoutComponent,
-    // canActivate: [AuthGuard],
-    // data: {
-    //   expectedRoles: ['coach'],
-    // },
+    canActivate: [AuthGuard],
+    data: {
+      expectedRoles: ['coach'],
+    },
   },
   {
     path: 'exercise',
     component: ExerciseComponent,
-    // canActivate: [AuthGuard],
-    // data: {
-    //   expectedRoles: ['coach'],
-    // },
+    canActivate: [AuthGuard],
+    data: {
+      expectedRoles: ['coach'],
+    },
   },
   {
     path: 'user-workouts',
-    component: UserWorkoutsComponent
+    component: UserWorkoutsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      expectedRoles: ['user','coach','admin'],
+    },
   },
   {
     path: 'all-workouts',
-    component: AllWorkoutsComponent
+    component: AllWorkoutsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      expectedRoles: ['user','coach','admin'],
+    },
   },
   {
     path: 'all-users',
-    component: UsersComponent
+    component: UsersComponent,
+    canActivate: [AuthGuard],
+    data: {
+      expectedRoles: ['user','coach','admin'],
+    },
   },
   {
     path: 'coach-requests',
-    component: CoachRequestsComponent
+    component: CoachRequestsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      expectedRoles: ['admin'],
+    },
   },
   {
     path: 'calendar',
-    component: CalendarComponent
+    component: CalendarComponent,
+    canActivate: [AuthGuard],
+    data: {
+      expectedRoles: ['user','coach','admin'],
+    },
   },
 ];
 @NgModule({

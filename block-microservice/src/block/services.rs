@@ -71,7 +71,6 @@ async fn get_subject_blocks(state: Data<AppState>, path: Path<i32>) -> impl Resp
 
 #[post("/block")]
 async fn create_block(state: Data<AppState>, body: Json<CreateBlockDTO>) -> impl Responder {
-    println!("hello there!");
     match sqlx::query_as::<_, Block>(
         "INSERT INTO blocks (user_id, user_name, subject_name, block_subject_id) VALUES ($1, $2, $3, $4) RETURNING id, user_id, user_name, subject_name, block_subject_id"
     )

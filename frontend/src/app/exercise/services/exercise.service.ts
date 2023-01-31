@@ -14,7 +14,7 @@ export class ExerciseService {
     return this.http.post<Exercise>('/api/exercise', createExerciseDTO);
   }
 
-  getAllExercises(): Observable<Exercise[]> {
-    return this.http.get<Exercise[]>('/api/exercise');
+  getAllExercises(userId?: number): Observable<Exercise[]> {
+    return this.http.get<Exercise[]>('/api/exercise/' + userId);
   }
 }

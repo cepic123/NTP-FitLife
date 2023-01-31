@@ -15,13 +15,13 @@
             <td>{{workout.name}}</td>
             <td>{{workout.description}}</td>
             <!-- user role -->
-            <td *ngIf="role === 'user'">
+            <td *ngIf="role !== 'coach'">
                 <button pButton type="button" label="Details" (click)="showDetailed(workout.id)"></button>
             </td>
-            <td *ngIf="role === 'user'">
+            <td *ngIf="role !== 'coach'">
                 <button pButton type="button" label="Comment/Rate" (click)="openCommentDialog(workout.id)"></button>
             </td>
-            <td *ngIf="role === 'user'">
+            <td *ngIf="role !== 'coach'">
                 <button pButton type="button" label="Remove from profile" (click)="removeFromUser(workout.id)"></button>
             </td>
             <!-- coach role -->
@@ -83,7 +83,7 @@
     <div class="card" style="margin: 10px;">
         <div *ngFor="let comment of comments; index as i;" class="card">
             <p>Comment by: {{comment.username}}</p>
-            <p>Rep {{comment.comment}}</p>
+            <p>Comment: {{comment.comment}}</p>
             <br>
         </div>
     </div>
