@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AllWorkoutsService } from '../all-workouts/services/all-workouts.service';
 import { ExerciseService } from '../exercise/services/exercise.service';
-import { CreateExerciseDTO, Exercise } from '../models/exercise';
+import { Exercise } from '../models/exercise';
 import { Workout, Set, Rep } from '../models/workout';
-import { UserWorkoutsService } from '../user-workouts/services/user-workouts.service';
 import { WorkoutService } from './services/workout.service';
 
 @Component({
@@ -14,7 +15,8 @@ export class WorkoutComponent implements OnInit {
 
   setNum: number = 0;
   newRepNoReps: number = 0;
-
+  breakLngth: number = 0;
+  noSets: number = 0;
   display: boolean = false;
   displayWorkout: boolean = false;
 
@@ -23,7 +25,7 @@ export class WorkoutComponent implements OnInit {
     description: "",
     sets: []
   }
-
+  comments: Comment[] = [];
   exerciseToAdd?: Exercise;
 
   exercises: Exercise[] = [];
@@ -31,7 +33,8 @@ export class WorkoutComponent implements OnInit {
   constructor(
     private workoutService: WorkoutService,
     private exerciseService: ExerciseService,
-    private userWorkoutsService: UserWorkoutsService,
+    private allWorkoutService: AllWorkoutsService,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
@@ -44,10 +47,6 @@ export class WorkoutComponent implements OnInit {
     });
   }
 
-  createWorkoutJSON() {
-    console.log(JSON.stringify(this.workout))
-  }
-
   validateWorkout() {
     if (this.workout.name && this.workout.name.length > 5 
       && this.workout.description && this.workout.description.length > 5) return false;
@@ -56,6 +55,14 @@ export class WorkoutComponent implements OnInit {
 
   creaeteWorkout() {
     this.workoutService.createWorkout(this.workout).subscribe((data) => {
+      alert(data.id);
+      var userId = localStorage.getItem("userId");
+      if (userId && data.id) {
+        this.allWorkoutService.addWorkoutToUser(parseInt(userId) ,data.id).subscribe((data) => {
+          console.log(data);
+          this.router.navigate(['user-workouts']);
+        })
+      }
     })
   }
 

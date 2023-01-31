@@ -14,14 +14,25 @@
         <tr>
             <td>{{workout.name}}</td>
             <td>{{workout.description}}</td>
-            <td>
+            <!-- user role -->
+            <td *ngIf="role === 'user'">
                 <button pButton type="button" label="Details" (click)="showDetailed(workout.id)"></button>
             </td>
-            <td>
+            <td *ngIf="role === 'user'">
                 <button pButton type="button" label="Comment/Rate" (click)="openCommentDialog(workout.id)"></button>
             </td>
-            <td>
+            <td *ngIf="role === 'user'">
                 <button pButton type="button" label="Remove from profile" (click)="removeFromUser(workout.id)"></button>
+            </td>
+            <!-- coach role -->
+             <td *ngIf="role === 'coach'">
+                <button pButton type="button" label="Details" (click)="showDetailed(workout.id)"></button>
+            </td>
+            <td *ngIf="role === 'coach'">
+                <button pButton type="button" label="View Comments" (click)="showComments(workout.id)"></button>
+            </td>
+            <td *ngIf="role === 'coach'">
+                <button pButton type="button" label="Delete Workout" (click)="deleteWorkout(workout.id)"></button>
             </td>
         </tr>
         </ng-template>
@@ -29,15 +40,20 @@
 </div>
 
 <p-dialog [(visible)]="displayWorkout">
-    <div class="card" style="margin: 10px;">
+    <div class="card" style="margin: 10px; display: grid;">
         <h1>{{workout.name}}</h1>
-        <div *ngFor="let set of workout.sets; index as i;" class="card" style="height: 200px; border: 1px solid;">
-            <p>Set {{set.orderNum}}</p>
-            <div *ngFor="let rep of set.reps; index as i;" class="card" style="border: 1px solid; float: left;">
+        <div *ngFor="let set of workout.sets; index as i;" class="card" style="display: inline-table; border: 1px solid; margin: 10px;">
+            <div>
+              <h3>Break length between exercises: {{set.breakLngth}}</h3>
+              <h3>Number of sets: {{set.noSets}}</h3>
+            </div>
+            <div>
+              <div *ngFor="let rep of set.reps; index as i;" class="card" style="border: 1px solid; float: left;margin: 10px;">
                 <p>Rep {{rep.orderNum}}</p>
                 <p>No Reps: {{rep.noReps}}</p>
                 <p>Exercise: {{rep.exercise?.name}}</p>
-                <p>Exercise: {{rep.exercise?.description}}</p>
+                <p>Description: {{rep.exercise?.description}}</p>
+              </div>
             </div>
             <br>
         </div>
@@ -61,3 +77,14 @@
         <button *ngIf="ratingExists" pButton type="button" label="Update rating" (click)="updateRating()"></button>
     </div>
 </p-dialog>
+
+<p-dialog [(visible)]="displayComments">
+    <h1 *ngIf="comments.length === 0"> No comments for this workout</h1>
+    <div class="card" style="margin: 10px;">
+        <div *ngFor="let comment of comments; index as i;" class="card">
+            <p>Comment by: {{comment.username}}</p>
+            <p>Rep {{comment.comment}}</p>
+            <br>
+        </div>
+    </div>
+  </p-dialog>

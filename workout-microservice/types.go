@@ -4,6 +4,14 @@ import (
 	"gorm.io/gorm"
 )
 
+type CalendarEntry struct {
+	gorm.Model
+	UserId      int    `json:"userId"`
+	WorkoutId   int    `json:"workoutId"`
+	Date        string `json:"date"`
+	WorkoutName string `json:"workoutName"`
+}
+
 type Exercise struct {
 	gorm.Model
 	ID          int    `json:"id" gorm:"primaryKey"`
@@ -46,5 +54,14 @@ func NewExercise(name, description, img string) *Exercise {
 		Name:        name,
 		Description: description,
 		Img:         img,
+	}
+}
+
+func NewCalendarEntry(userId, workoutId int, date, workoutName string) *CalendarEntry {
+	return &CalendarEntry{
+		UserId:      userId,
+		WorkoutId:   workoutId,
+		Date:        date,
+		WorkoutName: workoutName,
 	}
 }

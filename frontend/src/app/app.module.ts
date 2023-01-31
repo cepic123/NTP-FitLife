@@ -25,6 +25,8 @@ import { AllWorkoutsComponent } from './all-workouts/all-workouts.component';
 import { RatingModule } from 'primeng/rating';
 import { UsersComponent } from './users/users.component';
 import { CoachRequestsComponent } from './coach-requests/coach-requests.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { CoachRequestsComponent } from './coach-requests/coach-requests.componen
     LogoutComponent,
     AllWorkoutsComponent,
     UsersComponent,
-    CoachRequestsComponent
+    CoachRequestsComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ import { CoachRequestsComponent } from './coach-requests/coach-requests.componen
     InputTextareaModule,
     DropdownModule,
     RatingModule,
+    FullCalendarModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

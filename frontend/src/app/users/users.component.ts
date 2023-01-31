@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ComplaintService } from '../complaint/complaint.service';
+import { Complaint } from '../models/complaint';
 import { User } from '../models/user';
 import { UserService } from '../user/services/user.service';
 
@@ -10,7 +12,23 @@ import { UserService } from '../user/services/user.service';
 export class UsersComponent implements OnInit {
 
   users: User[] = [];
-  constructor(private userService: UserService) { }
+  complaint: Complaint = {
+    complaint_text: "",
+    subject_name: "",
+    user_name: ""
+  };
+  complaints: Complaint[] = [];
+  displayComplaints: boolean = false;
+
+  constructor(private userService: UserService,
+    private complaintService: ComplaintService) { }
+
+  getComplaints(userId: number) {
+    this.complaintService.getComplaints(userId).subscribe((data) => {
+      this.complaints = data;
+      this.openCommentDialog();
+    })
+  }
 
   ngOnInit(): void {
     this.getAllUsers()
@@ -33,5 +51,9 @@ export class UsersComponent implements OnInit {
     this.userService.restoreUser(userId).subscribe((data) => {
       this.getAllUsers();
     })
+  }
+
+  openCommentDialog() {
+    this.displayComplaints = true;
   }
 }

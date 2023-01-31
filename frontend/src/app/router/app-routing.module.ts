@@ -25,6 +25,7 @@ import { LogoutComponent } from '../logout/logout.component';
 import { AllWorkoutsComponent } from '../all-workouts/all-workouts.component';
 import { UsersComponent } from '../users/users.component';
 import { CoachRequestsComponent } from '../coach-requests/coach-requests.component';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 const routes: Routes = [
   {
@@ -74,7 +75,11 @@ const routes: Routes = [
   {
     path: 'coach-requests',
     component: CoachRequestsComponent
-  }
+  },
+  {
+    path: 'calendar',
+    component: CalendarComponent
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

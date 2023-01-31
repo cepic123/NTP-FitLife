@@ -40,7 +40,7 @@ export class AllWorkoutsComponent implements OnInit {
   addWorkoutToUser(workoutId: number) {
     var userId = localStorage.getItem("userId");
     if (userId) {
-      this.allWorkoutsService.AddWorkoutToUser(parseInt(userId), workoutId).subscribe((data) => {
+      this.allWorkoutsService.addWorkoutToUser(parseInt(userId), workoutId).subscribe((data) => {
         alert(data);
       })
     }

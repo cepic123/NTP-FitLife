@@ -5,7 +5,6 @@ import { Rating } from '../models/rating';
 import { UserWorkoutsService } from './services/user-workouts.service';
 import { CommentService } from '../comment/comment.service';
 import { RatingService } from '../rating/rating.service';
-import { getSafePropertyAccessString } from '@angular/compiler';
 
 @Component({
   selector: 'app-user-workouts',
@@ -14,6 +13,7 @@ import { getSafePropertyAccessString } from '@angular/compiler';
 })
 export class UserWorkoutsComponent implements OnInit {
 
+  role = localStorage.getItem("role");
   comment: Comment = {
     comment: ""
   };
@@ -31,13 +31,30 @@ export class UserWorkoutsComponent implements OnInit {
     rating: 0 
   }
   ratingExists: boolean = false;
+  comments: Comment[] = [];
+  displayComments: boolean = false;
 
   constructor(private userWorkoutsService: UserWorkoutsService,
     private commentService: CommentService,
-    private ratingService: RatingService) { }
+    private ratingService: RatingService,
+    private commentSerivce: CommentService,
+    ) { }
 
   ngOnInit(): void {
     this.getUserWorkouts();
+  }
+
+  deleteWorkout(workoutId: number) {
+    this.userWorkoutsService.deleteWorkout(workoutId).subscribe((data) => {
+      this.getUserWorkouts();
+    })
+  }
+
+  showComments(workoutId: number) {
+    this.commentSerivce.getSubjectComments(workoutId, "WORKOUT").subscribe((data) => {
+      this.comments = data;
+      this.displayComments = true;
+    })
   }
 
   removeFromUser(workoutId: number) {

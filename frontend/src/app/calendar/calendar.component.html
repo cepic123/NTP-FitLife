@@ -1,0 +1,73 @@
+<full-calendar [options]="calendarOptions"></full-calendar>
+
+<p-dialog [(visible)]="displayWorkoutPicker">
+<h1>Pick a workout for: {{workoutDate}}</h1>
+    <div class="card" style="margin: 10px;">
+        <p-table [value]="workouts">
+            <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-workout>
+            <tr>
+                <td>{{workout.name}}</td>
+                <td>{{workout.description}}</td>
+                <td>
+                    <button pButton type="button" label="Details" (click)="showDetailed(workout.id)"></button>
+                </td>
+                <td>
+                    <button pButton type="button" label="Pick workout" (click)="addToDate(workout.id, workout.name)"></button>
+                </td>
+            </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="displayWorkout">
+    <div class="card" style="margin: 10px; display: grid;">
+        <h1>{{workout.name}}</h1>
+        <div *ngFor="let set of workout.sets; index as i;" class="card" style="display: inline-table; border: 1px solid; margin: 10px;">
+            <div>
+              <h3>Break length between exercises: {{set.breakLngth}}</h3>
+              <h3>Number of sets: {{set.noSets}}</h3>
+            </div>
+            <div>
+              <div *ngFor="let rep of set.reps; index as i;" class="card" style="border: 1px solid; float: left;margin: 10px;">
+                <p>Rep {{rep.orderNum}}</p>
+                <p>No Reps: {{rep.noReps}}</p>
+                <p>Exercise: {{rep.exercise?.name}}</p>
+                <p>Description: {{rep.exercise?.description}}</p>
+              </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="displayEntry">
+    <div class="card" style="margin: 10px; display: grid;">
+        <h1>{{workout.name}}</h1>
+        <div *ngFor="let set of workout.sets; index as i;" class="card" style="display: inline-table; border: 1px solid; margin: 10px;">
+            <div>
+              <h3>Break length between exercises: {{set.breakLngth}}</h3>
+              <h3>Number of sets: {{set.noSets}}</h3>
+            </div>
+            <div>
+              <div *ngFor="let rep of set.reps; index as i;" class="card" style="border: 1px solid; float: left;margin: 10px;">
+                <p>Rep {{rep.orderNum}}</p>
+                <p>No Reps: {{rep.noReps}}</p>
+                <p>Exercise: {{rep.exercise?.name}}</p>
+                <p>Description: {{rep.exercise?.description}}</p>
+              </div>
+            </div>
+            <br>
+        </div>
+        <br>
+        <button pButton type="button" label="Remove workout" (click)="removeEntry()"></button>
+    </div>
+</p-dialog>

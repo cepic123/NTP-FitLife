@@ -45,6 +45,8 @@ func main() {
 	router.HandleFunc("/workout", redirect("http://localhost:3002"))
 	router.HandleFunc("/workout/rate/{id}/{rating}", redirect("http://localhost:3002"))
 	router.HandleFunc("/workout/{id}", redirect("http://localhost:3002"))
+	router.HandleFunc("/workout/calendar/{userId}/{workoutId}/{date}/{workoutName}", redirect("http://localhost:3002"))
+	router.HandleFunc("/workout/calendar/{id}", redirect("http://localhost:3002"))
 
 	//COMMENT MICROSERVICE
 	router.HandleFunc("/comment", redirect("http://localhost:3003"))

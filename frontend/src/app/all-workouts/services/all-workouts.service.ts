@@ -10,7 +10,7 @@ export class AllWorkoutsService {
 
   constructor(private http: HttpClient) { }
 
-  AddWorkoutToUser(userId: number, workoutId: number): Observable<string>{
+  addWorkoutToUser(userId: number, workoutId: number): Observable<string>{
     return this.http.post<string>('/api/user/' + userId + '/' + workoutId, {});
   }
 }

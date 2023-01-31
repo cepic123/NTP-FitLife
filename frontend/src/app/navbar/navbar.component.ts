@@ -52,6 +52,11 @@ export class NavbarComponent implements OnInit {
       routerLink: '/coach-requests',
     },
     {
+      label: 'Calendar',
+      icon: 'pi pi-fw pi-sign-in',
+      routerLink: '/calendar',
+    },
+    {
       label: 'Logout',
       icon: 'pi pi-fw pi-sign-in',
       routerLink: '/logout',

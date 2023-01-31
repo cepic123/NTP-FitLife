@@ -30,11 +30,27 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/workout/{id}", makeHTTPHandleFunc(s.handleWorkout))
 	router.HandleFunc("/workout/rate/{id}/{rating}", makeHTTPHandleFunc(s.handleUpdateWorkoutRating))
 
+	router.HandleFunc("/workout/calendar/{userId}/{workoutId}/{date}/{workoutName}", makeHTTPHandleFunc(s.handleAddCalendarEntry))
+
+	router.HandleFunc("/workout/calendar/{id}", makeHTTPHandleFunc(s.handleCalendarEntries))
+	router.HandleFunc("/workout/calendar/{id}", makeHTTPHandleFunc(s.handleCalendarEntries))
+
 	router.HandleFunc("/userWorkouts", makeHTTPHandleFunc(s.handleGetUserWorkouts))
 
 	fmt.Println("Server running on PORT: ", s.listenAddr)
 
 	http.ListenAndServe(s.listenAddr, router)
+}
+
+func (s *APIServer) handleCalendarEntries(w http.ResponseWriter, r *http.Request) error {
+	if r.Method == "GET" {
+		return s.handleCalendarEntriesForUser(w, r)
+	}
+	if r.Method == "DELETE" {
+		return s.handleDeleteCalendarEntry(w, r)
+	}
+
+	return nil
 }
 
 func (s *APIServer) handleWorkout(w http.ResponseWriter, r *http.Request) error {
@@ -63,6 +79,45 @@ func (s *APIServer) handleExercise(w http.ResponseWriter, r *http.Request) error
 	}
 
 	return nil
+}
+
+func (s *APIServer) handleDeleteCalendarEntry(w http.ResponseWriter, r *http.Request) error {
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	err := s.storage.DeleteCalendarEntry(id)
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, nil)
+}
+
+func (s *APIServer) handleCalendarEntriesForUser(w http.ResponseWriter, r *http.Request) error {
+	userId, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	calendarEntries, err := s.storage.GetCalendarEntriesForUser(userId)
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, calendarEntries)
+}
+
+func (s *APIServer) handleAddCalendarEntry(w http.ResponseWriter, r *http.Request) error {
+	workoutId, _ := strconv.Atoi(mux.Vars(r)["workoutId"])
+	userId, _ := strconv.Atoi(mux.Vars(r)["userId"])
+	date := mux.Vars(r)["date"]
+	workoutName := mux.Vars(r)["workoutName"]
+
+	calendarEntry := NewCalendarEntry(userId, workoutId, date, workoutName)
+
+	if err := s.storage.CreateCalendarEntry(calendarEntry); err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, calendarEntry)
 }
 
 func (s *APIServer) handleGetWorkout(w http.ResponseWriter, r *http.Request) error {
@@ -130,7 +185,27 @@ func (s *APIServer) handleCreateWorkout(w http.ResponseWriter, r *http.Request) 
 }
 
 func (s *APIServer) handleDeleteWorkout(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	err := s.storage.DeleteWorkout(id)
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, nil)
+}
+
+func (s *APIServer) handleDeleteExercise(w http.ResponseWriter, r *http.Request) error {
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	err := s.storage.DeleteExercise(id)
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJSON(w, http.StatusOK, nil)
 }
 
 func (s *APIServer) handleCreateExercise(w http.ResponseWriter, r *http.Request) error {
@@ -145,10 +220,6 @@ func (s *APIServer) handleCreateExercise(w http.ResponseWriter, r *http.Request)
 	}
 
 	return WriteJSON(w, http.StatusOK, exercise)
-}
-
-func (s *APIServer) handleDeleteExercise(w http.ResponseWriter, r *http.Request) error {
-	return nil
 }
 
 func (s *APIServer) handleGetAllExercises(w http.ResponseWriter, r *http.Request) error {

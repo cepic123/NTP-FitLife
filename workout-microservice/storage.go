@@ -18,6 +18,61 @@ type StorageInterface interface {
 	GetUserWorkouts([]int) (*[]Workout, error)
 	CreateWorkout(*Workout) error
 	UpdateRating(*Workout) error
+	DeleteCalendarEntry(int) error
+	DeleteWorkout(int) error
+	DeleteExercise(int) error
+	GetCalendarEntriesForUser(int) (*[]CalendarEntry, error)
+	CreateCalendarEntry(*CalendarEntry) error
+}
+
+func (s *Storage) DeleteWorkout(id int) error {
+	result := s.db.Delete(&Workout{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	result = s.db.Where("workout_id = ?", id).Delete(&CalendarEntry{})
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (s *Storage) DeleteExercise(id int) error {
+	result := s.db.Delete(&Exercise{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *Storage) DeleteCalendarEntry(id int) error {
+	result := s.db.Delete(&CalendarEntry{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *Storage) GetCalendarEntriesForUser(userId int) (*[]CalendarEntry, error) {
+	var calendarEntries []CalendarEntry
+
+	result := s.db.Where(&CalendarEntry{UserId: userId}).Find(&calendarEntries)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &calendarEntries, nil
+}
+
+func (s *Storage) CreateCalendarEntry(calendarEntry *CalendarEntry) error {
+	fmt.Println("Creating Calendar Entry")
+	if result := s.db.Create(calendarEntry); result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
 
 func (s *Storage) CreateExercise(exercise *Exercise) error {
@@ -100,6 +155,7 @@ func NewStorage() (*Storage, error) {
 	}
 
 	db.AutoMigrate(&Workout{}, &Exercise{}, &Set{}, &Rep{})
+	db.AutoMigrate(&CalendarEntry{})
 
 	return &Storage{
 		db: db,
