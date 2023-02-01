@@ -1,11 +1,12 @@
 import { Exercise } from "./exercise"
 
 export interface Workout {
-    id?: number,
+    ID?: number,
     name?: string,
     description?: string
     sets: Set[]
     rating?: number
+    coachId?: number
 }
 
 export interface Set {

@@ -31,7 +31,6 @@ export class UserComponent implements OnInit {
 
   createUser() {
     this.userService.createUser(this.username, this.email, this.password1, this.role.code).subscribe((data) => {
-      alert(data);
     })
   }
 

@@ -28,6 +28,6 @@ p, *, /complaint/subject/:id, *
 p, coach, /block, POST
 p, user, /block, POST
 p, admin, /block/:id, *
-p, admin, /block/user/:id, *
+p, *, /block/user/:id, *
 p, admin, /block/subject/:id, *
 p, coach, /exercise/:coachId, *

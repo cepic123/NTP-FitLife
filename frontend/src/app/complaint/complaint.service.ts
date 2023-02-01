@@ -22,4 +22,8 @@ export class ComplaintService {
   blockUser(block: Block): Observable<Block[]> {
     return this.http.post<Block[]>('/api/block', block);
   }
+
+  getBlockedUsers(userId?: number): Observable<Block[]> {
+    return this.http.get<Block[]>('/api/block/user/' + userId);
+  }
 }

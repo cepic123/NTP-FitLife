@@ -27,7 +27,6 @@ func (s *APIServer) Run() {
 	})
 
 	handler := c.Handler(router)
-	fmt.Println("HEREY")
 	http.ListenAndServe(s.listenAddr, handler)
 }
 
@@ -68,8 +67,6 @@ func (s *APIServer) handleCreateComment(w http.ResponseWriter, r *http.Request) 
 	comment, _ := s.storage.GetCommentBySubjectAndUser(createCommentDTO.UserID, createCommentDTO.SubjectID, createCommentDTO.CommentType)
 
 	if comment.Comment != "" {
-		fmt.Println("USER ALREADY COMMENT")
-		fmt.Println(comment)
 		return WriteJSON(w, http.StatusOK, comment)
 	}
 
@@ -91,8 +88,6 @@ func (s *APIServer) handleUpdateComment(w http.ResponseWriter, r *http.Request) 
 	comment, _ := s.storage.GetCommentBySubjectAndUser(createCommentDTO.UserID, createCommentDTO.SubjectID, createCommentDTO.CommentType)
 	comment.Comment = createCommentDTO.Comment
 	if comment.Comment == "" {
-		fmt.Println("COMMENT DOESNT EXIST")
-		fmt.Println(comment)
 		return WriteJSON(w, http.StatusOK, comment)
 	}
 

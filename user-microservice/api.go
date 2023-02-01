@@ -50,7 +50,6 @@ func (s *APIServer) Run() {
 	})
 
 	handler := c.Handler(router)
-	fmt.Println("HEREY")
 	http.ListenAndServe(s.listenAddr, handler)
 }
 
@@ -97,7 +96,6 @@ func (s *APIServer) handleValidateUser(w http.ResponseWriter, r *http.Request) e
 
 	user, err := s.storage.ValidateUser(username, password)
 
-	fmt.Println(user)
 	if err != nil {
 		return nil
 	}
@@ -114,9 +112,6 @@ func (s *APIServer) handleRemoveWorkoutFromUser(w http.ResponseWriter, r *http.R
 	workoutId, _ := strconv.Atoi(mux.Vars(r)["workoutId"])
 
 	var result, err = s.storage.GetUserWorkout(userId, workoutId)
-	fmt.Println(result)
-	fmt.Println(userId)
-	fmt.Println(workoutId)
 
 	empUser := UserWorkout{}
 	if *result == empUser {
@@ -220,7 +215,6 @@ func (s *APIServer) handleLoginUser(w http.ResponseWriter, r *http.Request) erro
 
 	user, err := s.storage.ValidateUser(loginUserDTO.Username, loginUserDTO.Password)
 
-	fmt.Println(user)
 	if err != nil {
 		return err
 	}
@@ -250,7 +244,6 @@ func createJWT(user *User) (string, error) {
 
 	secret := "cepic"
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	fmt.Println("HERE")
 
 	return token.SignedString([]byte(secret))
 }

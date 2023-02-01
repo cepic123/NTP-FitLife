@@ -14,7 +14,6 @@ type CalendarEntry struct {
 
 type Exercise struct {
 	gorm.Model
-	ID          int    `json:"id" gorm:"primaryKey"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Img         string `json:"img"`
@@ -23,7 +22,6 @@ type Exercise struct {
 
 type Rep struct {
 	gorm.Model
-	ID         int `json:"id" gorm:"primaryKey"`
 	SetID      int
 	OrderNum   int `json:"orderNum"`
 	NoReps     int `json:"noReps"`
@@ -33,7 +31,6 @@ type Rep struct {
 
 type Set struct {
 	gorm.Model
-	ID         int `json:"id" gorm:"primaryKey"`
 	WorkoutID  int
 	OrderNum   int   `json:"orderNum"`
 	NoSets     int   `json:"noSets"`
@@ -43,11 +40,11 @@ type Set struct {
 
 type Workout struct {
 	gorm.Model
-	ID          int    `json:"id" gorm:"primaryKey"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Sets        []Set  `json:"sets"`
 	Rating      int    `json:"rating"`
+	CoachId     int    `json:"coachId"`
 }
 
 func NewExercise(name, description, img string, coachId int) *Exercise {

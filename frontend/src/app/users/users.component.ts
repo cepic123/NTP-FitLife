@@ -47,7 +47,6 @@ export class UsersComponent implements OnInit {
       subject_name: username,
     }
     this.complaintService.blockUser(block).subscribe((data) => {
-      alert(data);
     })
   }
   

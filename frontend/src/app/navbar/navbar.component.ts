@@ -63,6 +63,7 @@ export class NavbarComponent implements OnInit {
           label: 'All Workouts',
           icon: 'pi pi-fw pi-sign-in',
           routerLink: '/all-workouts',
+          visible: role !== 'coach'
         },
         {
           label: 'Exercise',

@@ -27,7 +27,6 @@ func (s *APIServer) Run() {
 	})
 
 	handler := c.Handler(router)
-	fmt.Println("HEREY")
 	http.ListenAndServe(s.listenAddr, handler)
 }
 
@@ -54,8 +53,6 @@ func (s *APIServer) handleCreateRating(w http.ResponseWriter, r *http.Request) e
 	rating, _ := s.storage.GetRatingBySubjectAndUser(createRatingDTO.UserID, createRatingDTO.SubjectID, createRatingDTO.RatingType)
 
 	if rating.UserID != 0 {
-		fmt.Println("USER ALREADY RATED")
-		fmt.Println(rating)
 		return WriteJSON(w, http.StatusOK, rating)
 	}
 
@@ -69,7 +66,6 @@ func (s *APIServer) handleCreateRating(w http.ResponseWriter, r *http.Request) e
 	if err := s.storage.UpdateRating(rating); err != nil {
 		return err
 	}
-	fmt.Println(avgRating)
 
 	client := &http.Client{
 		Timeout: time.Second * 10,
@@ -94,8 +90,6 @@ func (s *APIServer) handleUpdateRating(w http.ResponseWriter, r *http.Request) e
 	rating, _ := s.storage.GetRatingBySubjectAndUser(createRatingDTO.UserID, createRatingDTO.SubjectID, createRatingDTO.RatingType)
 	rating.Rating = createRatingDTO.Rating
 	if rating.UserID == 0 {
-		fmt.Println("rating DOESNT EXIST")
-		fmt.Println(rating)
 		return WriteJSON(w, http.StatusOK, rating)
 	}
 
@@ -108,7 +102,6 @@ func (s *APIServer) handleUpdateRating(w http.ResponseWriter, r *http.Request) e
 	if err := s.storage.UpdateRating(rating); err != nil {
 		return err
 	}
-	fmt.Println(avgRating)
 
 	client := &http.Client{
 		Timeout: time.Second * 10,

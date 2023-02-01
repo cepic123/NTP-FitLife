@@ -22,7 +22,7 @@
               <button *ngIf="user.DeletedAt && role === 'admin'" pButton type="button" label="Restore User" (click)="restoreUser(user.id)"></button>
               <button *ngIf="!user.DeletedAt && role === 'user'" pButton type="button" label="Leave Complaint" (click)="openCommentInputDialog(user.id, user.username)"></button>
             </td>
-            <td>
+            <td *ngIf="!user.DeletedAt && role !== 'admin' ">
               <button *ngIf="!user.DeletedAt && role !== 'admin' " pButton type="button" label="Block User" (click)="blockUser(user.id, user.username)"></button>
             </td>
             <td>

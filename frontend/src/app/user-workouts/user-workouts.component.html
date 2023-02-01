@@ -16,23 +16,23 @@
             <td>{{workout.description}}</td>
             <!-- user role -->
             <td *ngIf="role !== 'coach'">
-                <button pButton type="button" label="Details" (click)="showDetailed(workout.id)"></button>
+                <button pButton type="button" label="Details" (click)="showDetailed(workout.ID)"></button>
             </td>
             <td *ngIf="role !== 'coach'">
-                <button pButton type="button" label="Comment/Rate" (click)="openCommentDialog(workout.id)"></button>
+                <button pButton type="button" label="Comment/Rate" (click)="openCommentDialog(workout.ID)"></button>
             </td>
             <td *ngIf="role !== 'coach'">
-                <button pButton type="button" label="Remove from profile" (click)="removeFromUser(workout.id)"></button>
+                <button pButton type="button" label="Remove from profile" (click)="removeFromUser(workout.ID)"></button>
             </td>
             <!-- coach role -->
              <td *ngIf="role === 'coach'">
-                <button pButton type="button" label="Details" (click)="showDetailed(workout.id)"></button>
+                <button pButton type="button" label="Details" (click)="showDetailed(workout.ID)"></button>
             </td>
             <td *ngIf="role === 'coach'">
-                <button pButton type="button" label="View Comments" (click)="showComments(workout.id)"></button>
+                <button pButton type="button" label="View Comments" (click)="showComments(workout.ID)"></button>
             </td>
             <td *ngIf="role === 'coach'">
-                <button pButton type="button" label="Delete Workout" (click)="deleteWorkout(workout.id)"></button>
+                <button pButton type="button" label="Delete Workout" (click)="deleteWorkout(workout.ID)"></button>
             </td>
         </tr>
         </ng-template>

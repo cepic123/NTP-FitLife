@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
@@ -29,7 +28,6 @@ type Storage struct {
 }
 
 func (s *Storage) CreateUserWorkout(userWorkout *UserWorkout) error {
-	fmt.Println("CREATING REFERENCE")
 	if result := s.db.Create(userWorkout); result.Error != nil {
 		return result.Error
 	}
@@ -160,8 +158,8 @@ func NewStorage() (*Storage, error) {
 	if err != nil {
 		return nil, err
 	}
-	//TODO: PUT THIS SOMHERE ELSE
-	db.AutoMigrate(&User{}, &UserWorkout{})
+	db.AutoMigrate(&UserWorkout{})
+	db.AutoMigrate(&User{})
 
 	return &Storage{
 		db: db,

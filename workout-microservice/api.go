@@ -49,7 +49,6 @@ func (s *APIServer) Run() {
 	})
 
 	handler := c.Handler(router)
-	fmt.Println("HEREY")
 	http.ListenAndServe(s.listenAddr, handler)
 }
 
@@ -159,7 +158,6 @@ func (s *APIServer) handleGetUserWorkouts(w http.ResponseWriter, r *http.Request
 }
 
 func (s *APIServer) handleUpdateWorkoutRating(w http.ResponseWriter, r *http.Request) error {
-	fmt.Println("UPDATE RATING")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 	rating, _ := strconv.Atoi(mux.Vars(r)["rating"])
 
@@ -171,15 +169,12 @@ func (s *APIServer) handleUpdateWorkoutRating(w http.ResponseWriter, r *http.Req
 
 	workout.Rating = rating
 	if workout.Name == "" {
-		fmt.Println("WORKOUT DOESNT EXIST")
-		fmt.Println(workout)
 		return WriteJSON(w, http.StatusOK, workout)
 	}
 
 	if err := s.storage.UpdateRating(workout); err != nil {
 		return err
 	}
-	fmt.Println("")
 	return WriteJSON(w, http.StatusOK, workout)
 }
 

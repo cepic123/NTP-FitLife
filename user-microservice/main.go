@@ -1,12 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 )
 
 func main() {
-	fmt.Println("USER MICROSERVICE")
 	storage, err := NewStorage()
 	if err != nil {
 		log.Fatal(err)

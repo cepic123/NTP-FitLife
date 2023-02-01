@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
@@ -68,7 +67,6 @@ func (s *Storage) GetCalendarEntriesForUser(userId int) (*[]CalendarEntry, error
 }
 
 func (s *Storage) CreateCalendarEntry(calendarEntry *CalendarEntry) error {
-	fmt.Println("Creating Calendar Entry")
 	if result := s.db.Create(calendarEntry); result.Error != nil {
 		return result.Error
 	}
@@ -76,7 +74,6 @@ func (s *Storage) CreateCalendarEntry(calendarEntry *CalendarEntry) error {
 }
 
 func (s *Storage) CreateExercise(exercise *Exercise) error {
-	fmt.Println("IN STORAGE")
 	if result := s.db.Create(exercise); result.Error != nil {
 		return result.Error
 	}
@@ -84,7 +81,6 @@ func (s *Storage) CreateExercise(exercise *Exercise) error {
 }
 
 func (s *Storage) CreateWorkout(workout *Workout) error {
-	fmt.Println("IN STORAGE")
 	if result := s.db.Create(workout); result.Error != nil {
 		return result.Error
 	}
@@ -92,7 +88,6 @@ func (s *Storage) CreateWorkout(workout *Workout) error {
 }
 
 func (s *Storage) UpdateRating(workout *Workout) error {
-	fmt.Println("UPDATING WORKOUT")
 	if result := s.db.Save(workout); result.Error != nil {
 		return result.Error
 	}

@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
@@ -37,7 +36,6 @@ func (s *Storage) GetCommentBySubjectAndUser(userId, subjectId int, commentType 
 }
 
 func (s *Storage) CreateComment(comment *Comment) error {
-	fmt.Println("CREATING COMMENT")
 	if result := s.db.Create(comment); result.Error != nil {
 		return result.Error
 	}
@@ -45,7 +43,6 @@ func (s *Storage) CreateComment(comment *Comment) error {
 }
 
 func (s *Storage) UpdateComment(comment *Comment) error {
-	fmt.Println("UPDATING COMMENT")
 	if result := s.db.Save(comment); result.Error != nil {
 		return result.Error
 	}

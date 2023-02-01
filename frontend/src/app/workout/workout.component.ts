@@ -57,12 +57,11 @@ export class WorkoutComponent implements OnInit {
   }
 
   creaeteWorkout() {
+    this.workout.coachId = this.userId;
     this.workoutService.createWorkout(this.workout).subscribe((data) => {
-      alert(data.id);
       var userId = localStorage.getItem("userId");
-      if (userId && data.id) {
-        this.allWorkoutService.addWorkoutToUser(parseInt(userId) ,data.id).subscribe((data) => {
-          console.log(data);
+      if (userId && data.ID) {
+        this.allWorkoutService.addWorkoutToUser(parseInt(userId), data.ID).subscribe((data) => {
           this.router.navigate(['user-workouts']);
         })
       }

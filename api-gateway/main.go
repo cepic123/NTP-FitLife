@@ -19,8 +19,6 @@ type ApiError struct {
 }
 
 func main() {
-	fmt.Println("API GATEWAY")
-
 	router := mux.NewRouter()
 
 	authEnforcer, err := casbin.NewEnforcerSafe("./auth_model.conf", "./policy.csv")
@@ -76,10 +74,7 @@ func main() {
 
 func authMiddleware(h http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("Calling auth middleware")
-
 		tokenStr := r.Header.Get("x-jwt-token")
-		fmt.Println(tokenStr)
 		token, err := validateJWT(tokenStr)
 
 		if err != nil {
@@ -123,13 +118,9 @@ func Authorizer(e *casbin.Enforcer) func(next http.Handler) http.Handler {
 			if role == "" {
 				role = "anonymous"
 			}
-			fmt.Println(role)
 
 			// casbin rule enforcing
 			res, err := e.EnforceSafe(role, r.URL.Path, r.Method)
-			fmt.Println(role)
-			fmt.Println(r.URL.Path)
-			fmt.Println(r.Method)
 
 			if err != nil {
 				WriteJSON(w, http.StatusForbidden, ApiError{Error: "Authorization error"})
@@ -208,7 +199,6 @@ func redirect(redirectAddr string) http.HandlerFunc {
 
 		res, err := client.Do(req)
 		if err != nil {
-			fmt.Println(err)
 			return
 		}
 		defer res.Body.Close()

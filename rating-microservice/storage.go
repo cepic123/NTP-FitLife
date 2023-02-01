@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
@@ -43,7 +42,6 @@ func (s *Storage) GetSubjectRating(subjectId int, ratingType string) (int, error
 }
 
 func (s *Storage) CreateRating(rating *Rating) error {
-	fmt.Println("CREATING RATING")
 	if result := s.db.Create(rating); result.Error != nil {
 		return result.Error
 	}
@@ -51,7 +49,6 @@ func (s *Storage) CreateRating(rating *Rating) error {
 }
 
 func (s *Storage) UpdateRating(rating *Rating) error {
-	fmt.Println("UPDATING rating")
 	if result := s.db.Save(rating); result.Error != nil {
 		return result.Error
 	}

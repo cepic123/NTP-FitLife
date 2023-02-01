@@ -5,6 +5,9 @@ import { Rating } from '../models/rating';
 import { UserWorkoutsService } from './services/user-workouts.service';
 import { CommentService } from '../comment/comment.service';
 import { RatingService } from '../rating/rating.service';
+import { Block } from '../models/block';
+import { ComplaintService } from '../complaint/complaint.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-workouts',
@@ -13,6 +16,7 @@ import { RatingService } from '../rating/rating.service';
 })
 export class UserWorkoutsComponent implements OnInit {
 
+  userId?: number;
   role = localStorage.getItem("role");
   comment: Comment = {
     comment: ""
@@ -33,15 +37,29 @@ export class UserWorkoutsComponent implements OnInit {
   ratingExists: boolean = false;
   comments: Comment[] = [];
   displayComments: boolean = false;
+  blocks: Block[]  = [];
+  blockIds: any[] = [];
 
   constructor(private userWorkoutsService: UserWorkoutsService,
     private commentService: CommentService,
     private ratingService: RatingService,
     private commentSerivce: CommentService,
+    private complaintService: ComplaintService,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
-    this.getUserWorkouts();
+    var userId = localStorage.getItem('userId')
+    this.userId = userId ? parseInt(userId) : undefined
+    this.getBlockedUsers();
+  }
+
+  getBlockedUsers() {
+    this.complaintService.getBlockedUsers(this.userId).subscribe((data) => {
+      this.blocks = data;
+      this.blockIds = this.blocks.map((block) => block.block_subject_id)
+      this.getUserWorkouts();
+    })
   }
 
   deleteWorkout(workoutId: number) {
@@ -61,8 +79,7 @@ export class UserWorkoutsComponent implements OnInit {
     var userId = localStorage.getItem("userId");
     if (userId) {
       this.userWorkoutsService.removeFromUser(parseInt(userId), workoutId).subscribe((data) => {
-        alert(data);
-        this.getUserWorkouts();
+        this.router.navigate(['all-workouts']);
       })
     }
   } 
@@ -131,6 +148,9 @@ export class UserWorkoutsComponent implements OnInit {
       if (userWorkoutIds.length > 0) {
         this.userWorkoutsService.getUserWorkouts(userWorkoutIds).subscribe((data) => {
           this.workouts = data;
+          for (let block of this.blockIds) {
+            this.workouts = this.workouts.filter((el) => {return el.coachId != block})
+          }
         })
       }
     })
